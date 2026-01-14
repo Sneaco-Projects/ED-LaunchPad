@@ -1,0 +1,94 @@
+{
+  "version": 1,
+  "name": "Demo Project",
+  "global": {
+    "bpm": 100,
+    "timeSignature": [4, 4],
+    "quantization": "1m"
+  },
+  "grid": {
+    "columns": 8,
+    "rows": 8
+  },
+  "tracks": [
+    {
+      "id": "drums",
+      "name": "Drums",
+      "column": 0,
+      "color": "#ff4757",
+      "clips": [
+        { "id": "drums_a", "name": "Drums A", "row": 0, "type": "loop", "source": { "kind": "generated", "generator": "drumsA", "bars": 1 } },
+        { "id": "drums_b", "name": "Drums B", "row": 1, "type": "loop", "source": { "kind": "generated", "generator": "drumsB", "bars": 1 } },
+        { "id": "drums_fill", "name": "Fill", "row": 2, "type": "oneShot", "source": { "kind": "generated", "generator": "drumsFill", "bars": 1 } },
+        { "id": "drums_stop", "name": "Stop", "row": 7, "type": "stop" }
+      ]
+    },
+    {
+      "id": "bass",
+      "name": "Bass",
+      "column": 1,
+      "color": "#ffa502",
+      "clips": [
+        { "id": "bass_a", "name": "Bass A", "row": 0, "type": "loop", "source": { "kind": "generated", "generator": "bassA", "bars": 1 } },
+        { "id": "bass_b", "name": "Bass B", "row": 1, "type": "loop", "source": { "kind": "generated", "generator": "bassB", "bars": 1 } },
+        { "id": "bass_fx", "name": "Bass Hit", "row": 2, "type": "oneShot", "source": { "kind": "generated", "generator": "bassHit", "bars": 0.5 } },
+        { "id": "bass_stop", "name": "Stop", "row": 7, "type": "stop" }
+      ]
+    },
+    {
+      "id": "chords",
+      "name": "Chords",
+      "column": 2,
+      "color": "#2ed573",
+      "clips": [
+        { "id": "chords_a", "name": "Chords A", "row": 0, "type": "loop", "source": { "kind": "generated", "generator": "chordsA", "bars": 1 } },
+        { "id": "chords_b", "name": "Chords B", "row": 1, "type": "loop", "source": { "kind": "generated", "generator": "chordsB", "bars": 1 } },
+        { "id": "chords_stab", "name": "Stab", "row": 2, "type": "oneShot", "source": { "kind": "generated", "generator": "chordsStab", "bars": 0.5 } },
+        { "id": "chords_stop", "name": "Stop", "row": 7, "type": "stop" }
+      ]
+    },
+    {
+      "id": "lead",
+      "name": "Lead",
+      "column": 3,
+      "color": "#1e90ff",
+      "clips": [
+        { "id": "lead_a", "name": "Lead A", "row": 0, "type": "loop", "source": { "kind": "generated", "generator": "leadA", "bars": 1 } },
+        { "id": "lead_b", "name": "Lead B", "row": 1, "type": "loop", "source": { "kind": "generated", "generator": "leadB", "bars": 1 } },
+        { "id": "lead_fx", "name": "FX", "row": 2, "type": "oneShot", "source": { "kind": "generated", "generator": "leadFx", "bars": 1 } },
+        { "id": "lead_stop", "name": "Stop", "row": 7, "type": "stop" }
+      ]
+    },
+    {
+      "id": "fx",
+      "name": "Vox/FX",
+      "column": 4,
+      "color": "#a55eea",
+      "clips": [
+        { "id": "fx_rise", "name": "Rise", "row": 0, "type": "oneShot", "source": { "kind": "generated", "generator": "rise", "bars": 1 } },
+        { "id": "fx_drop", "name": "Drop", "row": 1, "type": "oneShot", "source": { "kind": "generated", "generator": "drop", "bars": 0.5 } },
+        { "id": "fx_stop", "name": "Stop", "row": 7, "type": "stop" }
+      ]
+    },
+    { "id": "empty5", "name": "",
+      "column": 5, "color": "#57606f", "clips": []
+    },
+    { "id": "empty6", "name": "",
+      "column": 6, "color": "#57606f", "clips": []
+    },
+    { "id": "empty7", "name": "",
+      "column": 7, "color": "#57606f", "clips": []
+    }
+  ],
+  "customGrid": {
+    "columns": 8,
+    "rows": 2,
+    "label": "Custom Clips"
+  },
+  "customClips": [
+    { "id": "custom_00", "name": "Custom 1", "column": 0, "row": 0, "type": "loop", "source": { "kind": "generated", "generator": "customLoop1", "bars": 1 } },
+    { "id": "custom_10", "name": "Custom 2", "column": 1, "row": 0, "type": "oneShot", "source": { "kind": "generated", "generator": "customHit1", "bars": 0.5 } },
+    { "id": "custom_01", "name": "Custom 3", "column": 0, "row": 1, "type": "oneShot", "source": { "kind": "generated", "generator": "customHit2", "bars": 0.5 } },
+    { "id": "custom_11", "name": "Custom 4", "column": 1, "row": 1, "type": "loop", "source": { "kind": "generated", "generator": "customLoop2", "bars": 1 } }
+  ]
+}
