@@ -78,6 +78,34 @@ export class AudioEngine {
   async initAudio() {
     // Must be called from a user gesture.
     await Tone.start();
+    // Preload all audio buffers for smooth playback
+    await this._preloadAllBuffers();
+  }
+
+  async _preloadAllBuffers() {
+    const urls = [];
+    for (const { clip } of this._clipIndex.values()) {
+      if (clip.source?.kind === 'url' && clip.source.url) {
+        urls.push(clip.source.url);
+      }
+    }
+    if (urls.length === 0) return;
+    
+    console.log(`Preloading ${urls.length} audio samples...`);
+    try {
+      await Promise.all(urls.map(url => 
+        new Promise((resolve) => {
+          const buffer = new Tone.ToneAudioBuffer(url, resolve, () => {
+            console.warn(`Failed to load: ${url}`);
+            resolve();
+          });
+          void buffer;
+        })
+      ));
+      console.log('Audio samples preloaded!');
+    } catch (err) {
+      console.warn('Some samples failed to preload:', err);
+    }
   }
 
   setBpm(bpm) {
@@ -147,6 +175,15 @@ export class AudioEngine {
       }
     }
     this._scheduledEventIds.clear();
+
+    // Stop all active loop players immediately
+    for (const { node } of this._loopNodesByClipId.values()) {
+      try {
+        node.stop({ transportTick: 0, audioTime: Tone.now() });
+      } catch {
+        // ignore
+      }
+    }
 
     // Clear active state (but keep nodes loaded).
     for (const [column, clipId] of this._activeLoopByColumn.entries()) {
@@ -261,29 +298,28 @@ export class AudioEngine {
       player.autostart = false;
       player.connect(gain);
 
-      // Sync loop players to the transport so transport stop/pause works.
-      player.sync();
-
       return {
         node: {
           start: ({ transportTick, audioTime }) => {
-            const transportTime = Tone.Ticks(transportTick);
+            void transportTick;
             try {
-              player.stop(transportTime);
+              player.stop();
             } catch {
               // ignore
             }
             gain.gain.setValueAtTime(0, audioTime);
             gain.gain.rampTo(1, LOOP_START_FADE_SECONDS, audioTime);
-            player.start(transportTime);
+            // Start immediately at the scheduled audio time
+            player.start(audioTime);
           },
           stop: ({ transportTick, audioTime }) => {
-            const transportTime = Tone.Ticks(transportTick);
+            void transportTick;
             gain.gain.rampTo(0, LOOP_STOP_FADE_SECONDS, audioTime);
+            // Stop after fade
             try {
-              player.stop(transportTime);
+              player.stop(audioTime + LOOP_STOP_FADE_SECONDS + 0.01);
             } catch {
-              // ignore
+              try { player.stop(); } catch { /* ignore */ }
             }
           },
           dispose: () => player.dispose(),
@@ -380,9 +416,10 @@ export class AudioEngine {
     this._queuedLoopByColumn.set(column, clip.id);
     this._setClipState(clip.id, 'queued');
 
-    // If something is already active in this column, wait until the end of the bar
-    // so the current loop finishes cleanly before switching.
-    const tick = this._nextTick(active ? '1m' : undefined);
+    // ALWAYS wait until the end of the bar before switching samples.
+    // This matches Novation viral-hiphop behavior: the current loop finishes
+    // its full cycle before the new sample starts.
+    const tick = this._nextTick('1m');
 
     this._scheduleAtTick(tick, ({ audioTime, transportTick }) => {
       const stillQueued = this._queuedLoopByColumn.get(column) === clip.id;

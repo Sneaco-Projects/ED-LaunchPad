@@ -1,0 +1,166 @@
+{
+  "version": 1,
+  "name": "Phonk / Brazilian Funk",
+  "global": {
+    "bpm": 130,
+    "timeSignature": [4, 4],
+    "quantization": "1m"
+  },
+  "grid": {
+    "columns": 8,
+    "rows": 8
+  },
+  "tracks": [
+    {
+      "id": "drums",
+      "name": "Drums",
+      "column": 0,
+      "color": "#ff4757",
+      "clips": [
+        { "id": "drums_1", "name": "Whistle", "row": 0, "type": "loop", "source": { "kind": "url", "url": "/audio/drums_Brazilian_funk/drums_Brazilian_funk_-_1_-_Drums_original_sample_-_SO_FAFU_130_top_loop_decria_whistle.wav", "bars": 1 } },
+        { "id": "drums_2", "name": "Glass Brk", "row": 1, "type": "loop", "source": { "kind": "url", "url": "/audio/drums_Brazilian_funk/drums_Brazilian_funk_-_2_-_Drums_original_sample_-_KING_DOUDOU_131_drum_loop_bailefunk_glas_break.wav", "bars": 1 } },
+        { "id": "drums_3", "name": "Nitro", "row": 2, "type": "loop", "source": { "kind": "url", "url": "/audio/drums_Brazilian_funk/drums_Brazilian_funk_-_3_-_Drums_original_sample_-_KING_DOUDOU_percussion_loop_baile_funk_nitro.wav", "bars": 1 } },
+        { "id": "drums_4", "name": "Rewind", "row": 3, "type": "loop", "source": { "kind": "url", "url": "/audio/drums_Brazilian_funk/drums_Brazilian_funk_-_4_-_Drums_original_sample_-_JLZ_bailefunk_loop_rewind_132.wav", "bars": 1 } },
+        { "id": "drums_5", "name": "Fill", "row": 4, "type": "oneShot", "source": { "kind": "url", "url": "/audio/drums_Brazilian_funk/drums_Brazilian_funk_-_5_-_Drums_original_sample_-_JLZ_drum_fill_otrem_129.wav", "bars": 0.5 } },
+        { "id": "drums_6", "name": "Nitro Full", "row": 5, "type": "loop", "source": { "kind": "url", "url": "/audio/drums_Brazilian_funk/drums_Brazilian_funk_-_6_-_Drums_original_sample_-_KING_DOUDOU_percussion_loop_baile_funk_nitro_full_133.wav", "bars": 1 } },
+        { "id": "drums_7", "name": "Snare 1", "row": 6, "type": "oneShot", "source": { "kind": "url", "url": "/audio/drums_Brazilian_funk/drums_Brazilian_funk_-_7_-_Drums_original_sample_-_GRSP_RKFM_135_snare_bonito.wav", "bars": 0.25 } },
+        { "id": "drums_stop", "name": "Stop", "row": 7, "type": "stop" }
+      ]
+    },
+    {
+      "id": "bass",
+      "name": "Bass",
+      "column": 1,
+      "color": "#ffa502",
+      "clips": [
+        { "id": "bass_1", "name": "Submundo", "row": 0, "type": "loop", "source": { "kind": "url", "url": "/audio/bass_phonk/bass_phonk_-_1_-_Bass_original_sample_-_GRSP_RKFM_135_bass_synth_submundo_Dsharpmin.wav", "bars": 1 } },
+        { "id": "bass_2", "name": "Hyperzado", "row": 1, "type": "loop", "source": { "kind": "url", "url": "/audio/bass_phonk/bass_phonk_-_2_-_Bass_original_sample_-_GRSP_RKFM_135_bass_synth_hyperzado_Dsharpmin.wav", "bars": 1 } },
+        { "id": "bass_3", "name": "Piercing", "row": 2, "type": "loop", "source": { "kind": "url", "url": "/audio/bass_phonk/bass_phonk_-_3_-_Bass_original_sample_-_FL_BF_Bass_Loop_Synth_Piercing_130_Csharpm.wav", "bars": 1 } },
+        { "id": "bass_4", "name": "Pistao", "row": 3, "type": "loop", "source": { "kind": "url", "url": "/audio/bass_phonk/bass_phonk_-_4_-_Bass_original_sample_-_BADSISTA_bass_loop_pistao_01_130_Amin.wav", "bars": 1 } },
+        { "id": "bass_5", "name": "Pensativa", "row": 4, "type": "loop", "source": { "kind": "url", "url": "/audio/bass_phonk/bass_phonk_-_5_-_Bass_original_sample_-_BADSISTA_bass_loop_pensativa_110_Gsharpmin.wav", "bars": 1 } },
+        { "id": "bass_6", "name": "Lasergrave", "row": 5, "type": "loop", "source": { "kind": "url", "url": "/audio/bass_phonk/bass_phonk_-_6_-_Bass_original_sample_-_GRSP_RKFM_135_bass_synth_lasergrave_A.wav", "bars": 1 } },
+        { "id": "bass_7", "name": "Maximal", "row": 6, "type": "loop", "source": { "kind": "url", "url": "/audio/bass_phonk/bass_phonk_-_7_-_Bass_original_sample_-_DS_VBP_130_bass_synth_maximal_Dsharpmin.wav", "bars": 1 } },
+        { "id": "bass_stop", "name": "Stop", "row": 7, "type": "stop" }
+      ]
+    },
+    {
+      "id": "perc",
+      "name": "Perc",
+      "column": 2,
+      "color": "#2ed573",
+      "clips": [
+        { "id": "perc_1", "name": "Finin", "row": 0, "type": "loop", "source": { "kind": "url", "url": "/audio/percussion_funk/percussion_funk_-_1_-_Drums_original_sample_-_GRSP_RKFM_135_percussion_finin_Dsharpmin.wav", "bars": 1 } },
+        { "id": "perc_2", "name": "Nitro Full", "row": 1, "type": "loop", "source": { "kind": "url", "url": "/audio/percussion_funk/percussion_funk_-_2_-_Drums_original_sample_-_KING_DOUDOU_percussion_loop_baile_funk_nitro_full_133.wav", "bars": 1 } },
+        { "id": "perc_3", "name": "Fennec", "row": 2, "type": "loop", "source": { "kind": "url", "url": "/audio/percussion_funk/percussion_funk_-_3_-_Drums_original_sample_-_MO_HMLDS_130_perc_loop_fennecxx_ritmada.wav", "bars": 1 } },
+        { "id": "perc_4", "name": "Bolhas", "row": 3, "type": "loop", "source": { "kind": "url", "url": "/audio/percussion_funk/percussion_funk_-_4_-_Drums_original_sample_-_MO_PRBLM_130_perc_loop_br_bolhas_triplet.wav", "bars": 1 } },
+        { "id": "perc_5", "name": "Afro Slice", "row": 4, "type": "loop", "source": { "kind": "url", "url": "/audio/percussion_funk/percussion_funk_-_5_-_Drums_original_sample_-_JLZ_percussion_loop_afroslicex_130.wav", "bars": 1 } },
+        { "id": "perc_6", "name": "Loka", "row": 5, "type": "loop", "source": { "kind": "url", "url": "/audio/percussion_funk/percussion_funk_-_6_-_Drums_original_sample_-_BADSISTA_percussion_loop_loka_127.wav", "bars": 1 } },
+        { "id": "perc_7", "name": "Vemaj", "row": 6, "type": "loop", "source": { "kind": "url", "url": "/audio/percussion_funk/percussion_funk_-_7_-_Drums_original_sample_-_MO_HMLDS_155_perc_loop_vemaj.wav", "bars": 1 } },
+        { "id": "perc_stop", "name": "Stop", "row": 7, "type": "stop" }
+      ]
+    },
+    {
+      "id": "leads",
+      "name": "Leads",
+      "column": 3,
+      "color": "#1e90ff",
+      "clips": [
+        { "id": "lead_1", "name": "Ominous", "row": 0, "type": "loop", "source": { "kind": "url", "url": "/audio/Leads_phonk/Leads_phonk_-_1_-_Leads_original_sample_-_KMRBI_BP_130_synth_lead_loop_ominous_Dm.wav", "bars": 1 } },
+        { "id": "lead_2", "name": "Supernova", "row": 1, "type": "loop", "source": { "kind": "url", "url": "/audio/Leads_phonk/Leads_phonk_-_2_-_Leads_original_sample_-_DS_VBP_130_synth_lead_supernova_Fsharpmin.wav", "bars": 1 } },
+        { "id": "lead_3", "name": "Bork", "row": 2, "type": "loop", "source": { "kind": "url", "url": "/audio/Leads_phonk/Leads_phonk_-_3_-_Leads_original_sample_-_DS_VBP_120_synth_lead_bork_Csharp.wav", "bars": 1 } },
+        { "id": "lead_4", "name": "Maximal", "row": 3, "type": "loop", "source": { "kind": "url", "url": "/audio/Leads_phonk/Leads_phonk_-_4_-_Leads_original_sample_-_DS_VBP_130_synth_lead_maximal_Dsharpmin.wav", "bars": 1 } },
+        { "id": "lead_5", "name": "Novinha", "row": 4, "type": "loop", "source": { "kind": "url", "url": "/audio/Leads_phonk/Leads_phonk_-_5_-_Leads_original_sample_-_DS_BPE_126_synth_lead_novinha_Csharpmin.wav", "bars": 1 } },
+        { "id": "lead_6", "name": "Muda", "row": 5, "type": "loop", "source": { "kind": "url", "url": "/audio/Leads_phonk/Leads_phonk_-_6_-_Leads_original_sample_-_DS_BPF_130_synth_lead_muda_Gmin.wav", "bars": 1 } },
+        { "id": "lead_7", "name": "Fury", "row": 6, "type": "loop", "source": { "kind": "url", "url": "/audio/Leads_phonk/Leads_phonk_-_7_-_Leads_original_sample_-_DS_BPS_130_synth_lead_fury_D.wav", "bars": 1 } },
+        { "id": "lead_stop", "name": "Stop", "row": 7, "type": "stop" }
+      ]
+    },
+    {
+      "id": "synth",
+      "name": "Synth",
+      "column": 4,
+      "color": "#a55eea",
+      "clips": [
+        { "id": "synth_1", "name": "Gem", "row": 0, "type": "loop", "source": { "kind": "url", "url": "/audio/synth_plucks_phonl/synth_plucks_phonl_-_1_-_Synth_original_sample_-_DS_VBP_130_synth_pluck_gem_Dmin.wav", "bars": 1 } },
+        { "id": "synth_2", "name": "Hope", "row": 1, "type": "loop", "source": { "kind": "url", "url": "/audio/synth_plucks_phonl/synth_plucks_phonl_-_2_-_Synth_original_sample_-_DS_VBP_130_synth_pluck_hope_Fsharpmin.wav", "bars": 1 } },
+        { "id": "synth_3", "name": "Crystal", "row": 2, "type": "loop", "source": { "kind": "url", "url": "/audio/synth_plucks_phonl/synth_plucks_phonl_-_3_-_Synth_original_sample_-_DS_BPT_130_synth_pluck_crystal_Fsharpmin.wav", "bars": 1 } },
+        { "id": "synth_4", "name": "Side", "row": 3, "type": "loop", "source": { "kind": "url", "url": "/audio/synth_plucks_phonl/synth_plucks_phonl_-_4_-_Synth_original_sample_-_DS_VP3_160_synth_pluck_side_G.wav", "bars": 1 } },
+        { "id": "synth_5", "name": "Face", "row": 4, "type": "loop", "source": { "kind": "url", "url": "/audio/synth_plucks_phonl/synth_plucks_phonl_-_5_-_Synth_original_sample_-_DS_BPT_130_synth_pluck_face_Fmin.wav", "bars": 1 } },
+        { "id": "synth_6", "name": "Chemistry", "row": 5, "type": "loop", "source": { "kind": "url", "url": "/audio/synth_plucks_phonl/synth_plucks_phonl_-_6_-_Synth_original_sample_-_DS_BPT_90_synth_pluck_chemistry_slow_Gmin.wav", "bars": 1 } },
+        { "id": "synth_7", "name": "Vapo", "row": 6, "type": "loop", "source": { "kind": "url", "url": "/audio/synth_plucks_phonl/synth_plucks_phonl_-_7_-_Synth_original_sample_-_DS_BPT_130_synth_pluck_vapo_Ebmin.wav", "bars": 1 } },
+        { "id": "synth_stop", "name": "Stop", "row": 7, "type": "stop" }
+      ]
+    },
+    {
+      "id": "strings",
+      "name": "Strings",
+      "column": 5,
+      "color": "#ff6b81",
+      "clips": [
+        { "id": "str_1", "name": "Sitar Dirty", "row": 0, "type": "loop", "source": { "kind": "url", "url": "/audio/string_phonk/string_phonk_-_1_-_Strings_original_sample_-_DS_BPT_120_strings_sitar_dirty_Dsharp.wav", "bars": 1 } },
+        { "id": "str_2", "name": "Sitar Forte", "row": 1, "type": "loop", "source": { "kind": "url", "url": "/audio/string_phonk/string_phonk_-_2_-_Strings_original_sample_-_DS_BPT_110_strings_sitar_forte_Csharp.wav", "bars": 1 } },
+        { "id": "str_3", "name": "Requiem", "row": 2, "type": "loop", "source": { "kind": "url", "url": "/audio/string_phonk/string_phonk_-_3_-_Strings_original_sample_-_DS_BPT_130_strings_violin_requiem_low_Bbmin.wav", "bars": 1 } },
+        { "id": "str_4", "name": "Dancer", "row": 3, "type": "loop", "source": { "kind": "url", "url": "/audio/string_phonk/string_phonk_-_4_-_Strings_original_sample_-_DS_VBP_140_strings_viola_dancer_Bbmin.wav", "bars": 1 } },
+        { "id": "str_5", "name": "Grow", "row": 4, "type": "loop", "source": { "kind": "url", "url": "/audio/string_phonk/string_phonk_-_5_-_Strings_original_sample_-_DS_BPT_130_strings_violin_grow_Fmin.wav", "bars": 1 } },
+        { "id": "str_6", "name": "Distorted", "row": 5, "type": "loop", "source": { "kind": "url", "url": "/audio/string_phonk/string_phonk_-_6_-_Strings_original_sample_-_DS_BPT_130_strings_sitar_distorted_Asharp.wav", "bars": 1 } },
+        { "id": "str_7", "name": "Retro", "row": 6, "type": "loop", "source": { "kind": "url", "url": "/audio/string_phonk/string_phonk_-_7_-_Strings_original_sample_-_DS_VBP_124_strings_viola_retro_Amin.wav", "bars": 1 } },
+        { "id": "str_stop", "name": "Stop", "row": 7, "type": "stop" }
+      ]
+    },
+    {
+      "id": "fx",
+      "name": "FX",
+      "column": 6,
+      "color": "#00d2d3",
+      "clips": [
+        { "id": "fx_1", "name": "Pass Stop", "row": 0, "type": "loop", "source": { "kind": "url", "url": "/audio/fx_phonk_trap_house/fx_phonk_trap_house_-_1_-_FX_original_sample_-_FL_ATPH_Fx_Loop_Fast_Passing_Stopped_80.wav", "bars": 1 } },
+        { "id": "fx_2", "name": "Dakar", "row": 1, "type": "loop", "source": { "kind": "url", "url": "/audio/fx_phonk_trap_house/fx_phonk_trap_house_-_2_-_FX_original_sample_-_RKU_CTM_140_Fx_Texture_Loop_Dakar_City.wav", "bars": 1 } },
+        { "id": "fx_3", "name": "Siren", "row": 2, "type": "loop", "source": { "kind": "url", "url": "/audio/fx_phonk_trap_house/fx_phonk_trap_house_-_3_-_FX_original_sample_-_DS_VP_150_fx_siren_loop_killer_G.wav", "bars": 1 } },
+        { "id": "fx_4", "name": "Radio", "row": 3, "type": "loop", "source": { "kind": "url", "url": "/audio/fx_phonk_trap_house/fx_phonk_trap_house_-_4_-_FX_original_sample_-_TSP_SP_120_fx_broken_radio_Dmin.wav", "bars": 1 } },
+        { "id": "fx_5", "name": "Metro Rise", "row": 4, "type": "loop", "source": { "kind": "url", "url": "/audio/fx_phonk_trap_house/fx_phonk_trap_house_-_5_-_FX_original_sample_-_KMRBI_BP_130_fx_riser_loop_metro.wav", "bars": 1 } },
+        { "id": "fx_6", "name": "Trigger", "row": 5, "type": "loop", "source": { "kind": "url", "url": "/audio/fx_phonk_trap_house/fx_phonk_trap_house_-_6_-_FX_original_sample_-_STCR2_DPV_99_FX_Loop_Atmosphere_Trigger_Fsharp.wav", "bars": 1 } },
+        { "id": "fx_7", "name": "Rave Ghost", "row": 6, "type": "loop", "source": { "kind": "url", "url": "/audio/fx_phonk_trap_house/fx_phonk_trap_house_-_7_-_FX_original_sample_-_AU_PE_110_fx_texture_loop_rave_ghosts.wav", "bars": 1 } },
+        { "id": "fx_stop", "name": "Stop", "row": 7, "type": "stop" }
+      ]
+    },
+    {
+      "id": "vocals",
+      "name": "Vocals",
+      "column": 7,
+      "color": "#eccc68",
+      "clips": [
+        { "id": "vox_1", "name": "Chucu", "row": 0, "type": "loop", "source": { "kind": "url", "url": "/audio/Vocals_phonk/Vocals_phonk_-_1_-_Vocals_original_sample_-_SO_BFV_130_vocal_beatbox_chucu.wav", "bars": 1 } },
+        { "id": "vox_2", "name": "Rabeta", "row": 1, "type": "loop", "source": { "kind": "url", "url": "/audio/Vocals_phonk/Vocals_phonk_-_2_-_Vocals_original_sample_-_SO_BFV_130_vocal_loop_rabeta_Fmin.wav", "bars": 1 } },
+        { "id": "vox_3", "name": "Rocinha", "row": 2, "type": "loop", "source": { "kind": "url", "url": "/audio/Vocals_phonk/Vocals_phonk_-_3_-_Vocals_original_sample_-_SO_BFV_130_vocal_beatbox_rocinha.wav", "bars": 1 } },
+        { "id": "vox_4", "name": "Funk Star", "row": 3, "type": "loop", "source": { "kind": "url", "url": "/audio/Vocals_phonk/Vocals_phonk_-_4_-_Vocals_original_sample_-_91V_UKB_134_vocal_hook_male_rap_hard_new_funk_star_dry.wav", "bars": 1 } },
+        { "id": "vox_5", "name": "Lowdown", "row": 4, "type": "loop", "source": { "kind": "url", "url": "/audio/Vocals_phonk/Vocals_phonk_-_5_-_Vocals_original_sample_-_FF2_100_kit_tape_vinyl_lowdown_vocals_F.wav", "bars": 1 } },
+        { "id": "vox_6", "name": "Haha", "row": 5, "type": "loop", "source": { "kind": "url", "url": "/audio/Vocals_phonk/Vocals_phonk_-_6_-_Vocals_original_sample_-_SO_FAFU_130_vocal_resampled_haha_maringa_Cmin.wav", "bars": 1 } },
+        { "id": "vox_7", "name": "Give", "row": 6, "type": "oneShot", "source": { "kind": "url", "url": "/audio/Vocals_phonk/Vocals_phonk_-_7_-_Vocals_original_sample_-_DS_BF_130_vocal_chop_give_Bmin.wav", "bars": 0.5 } },
+        { "id": "vox_stop", "name": "Stop", "row": 7, "type": "stop" }
+      ]
+    }
+  ],
+  "customGrid": {
+    "columns": 8,
+    "rows": 2,
+    "label": "One Shots & FX"
+  },
+  "customClips": [
+    { "id": "custom_00", "name": "Snare 1", "column": 0, "row": 0, "type": "oneShot", "source": { "kind": "url", "url": "/audio/drums_Brazilian_funk/drums_Brazilian_funk_-_7_-_Drums_original_sample_-_GRSP_RKFM_135_snare_bonito.wav", "bars": 0.25 } },
+    { "id": "custom_10", "name": "Snare 2", "column": 1, "row": 0, "type": "oneShot", "source": { "kind": "url", "url": "/audio/drums_Brazilian_funk/drums_Brazilian_funk_-_8_-_Drums_original_sample_-_GRSP_RKFM_135_snare_mandelao.wav", "bars": 0.25 } },
+    { "id": "custom_20", "name": "Fill", "column": 2, "row": 0, "type": "oneShot", "source": { "kind": "url", "url": "/audio/drums_Brazilian_funk/drums_Brazilian_funk_-_5_-_Drums_original_sample_-_JLZ_drum_fill_otrem_129.wav", "bars": 0.5 } },
+    { "id": "custom_30", "name": "Osmose", "column": 3, "row": 0, "type": "loop", "source": { "kind": "url", "url": "/audio/fx_phonk_trap_house/fx_phonk_trap_house_-_8_-_FX_original_sample_-_STCR2_PHONK_100_FX_Loop_Atmosphere_Osmose.wav", "bars": 1 } },
+    { "id": "custom_40", "name": "Bass Forte", "column": 4, "row": 0, "type": "loop", "source": { "kind": "url", "url": "/audio/bass_phonk/bass_phonk_-_8_-_Bass_original_sample_-_DS_BPT_110_bass_synth_forte_Csharp.wav", "bars": 1 } },
+    { "id": "custom_50", "name": "Vai Favela", "column": 5, "row": 0, "type": "oneShot", "source": { "kind": "url", "url": "/audio/Vocals_phonk/Vocals_phonk_-_8_-_Vocals_original_sample_-_SO_FAFU_130_vocal_resampled_vai_favela_Asharpmin.wav", "bars": 0.5 } },
+    { "id": "custom_60", "name": "RJ Perc", "column": 6, "row": 0, "type": "loop", "source": { "kind": "url", "url": "/audio/percussion_funk/percussion_funk_-_8_-_Drums_original_sample_-_MO_HMLDS_136_perc_loop_rj.wav", "bars": 1 } },
+    { "id": "custom_70", "name": "Bazar", "column": 7, "row": 0, "type": "loop", "source": { "kind": "url", "url": "/audio/string_phonk/string_phonk_-_8_-_Strings_original_sample_-_DS_VBP_130_strings_bouzouki_bazar_D.wav", "bars": 1 } },
+    { "id": "custom_01", "name": "Edge Pluck", "column": 0, "row": 1, "type": "loop", "source": { "kind": "url", "url": "/audio/synth_plucks_phonl/synth_plucks_phonl_-_8_-_Synth_original_sample_-_DS_BPS_140_synth_pluck_edge_Emin.wav", "bars": 1 } },
+    { "id": "custom_11", "name": "Pluck Gem", "column": 1, "row": 1, "type": "loop", "source": { "kind": "url", "url": "/audio/Leads_phonk/Leads_phonk_-_8_-_Synth_original_sample_-_DS_VBP_130_synth_pluck_gem_Dmin.wav", "bars": 1 } },
+    { "id": "custom_21", "name": "Chucu", "column": 2, "row": 1, "type": "oneShot", "source": { "kind": "url", "url": "/audio/Vocals_phonk/Vocals_phonk_-_1_-_Vocals_original_sample_-_SO_BFV_130_vocal_beatbox_chucu.wav", "bars": 0.5 } },
+    { "id": "custom_31", "name": "Rocinha", "column": 3, "row": 1, "type": "oneShot", "source": { "kind": "url", "url": "/audio/Vocals_phonk/Vocals_phonk_-_3_-_Vocals_original_sample_-_SO_BFV_130_vocal_beatbox_rocinha.wav", "bars": 0.5 } },
+    { "id": "custom_41", "name": "Siren", "column": 4, "row": 1, "type": "oneShot", "source": { "kind": "url", "url": "/audio/fx_phonk_trap_house/fx_phonk_trap_house_-_3_-_FX_original_sample_-_DS_VP_150_fx_siren_loop_killer_G.wav", "bars": 0.5 } },
+    { "id": "custom_51", "name": "Radio", "column": 5, "row": 1, "type": "oneShot", "source": { "kind": "url", "url": "/audio/fx_phonk_trap_house/fx_phonk_trap_house_-_4_-_FX_original_sample_-_TSP_SP_120_fx_broken_radio_Dmin.wav", "bars": 0.5 } },
+    { "id": "custom_61", "name": "Loka", "column": 6, "row": 1, "type": "oneShot", "source": { "kind": "url", "url": "/audio/percussion_funk/percussion_funk_-_6_-_Drums_original_sample_-_BADSISTA_percussion_loop_loka_127.wav", "bars": 0.5 } },
+    { "id": "custom_71", "name": "Afro Slice", "column": 7, "row": 1, "type": "oneShot", "source": { "kind": "url", "url": "/audio/percussion_funk/percussion_funk_-_5_-_Drums_original_sample_-_JLZ_percussion_loop_afroslicex_130.wav", "bars": 0.5 } }
+  ]
+}
