@@ -355,18 +355,26 @@ export class AudioEngine {
     this._scheduleAtTick(tick, ({ audioTime }) => {
       this._setClipState(clip.id, 'playing');
 
+      // Calculate duration based on clip bars
+      const bars = typeof clip.source?.bars === 'number' ? clip.source.bars : 0.5;
+      const barSeconds = Tone.Time('1m').toSeconds();
+      const durationMs = Math.max(200, Math.floor(bars * barSeconds * 1000));
+      // Add buffer time for disposal (100ms after playback ends)
+      const disposeMs = durationMs + 100;
+
       if (clip.source?.kind === 'generated') {
         playGeneratedOneShot(clip.source.generator, { destination: this._master, time: audioTime });
       } else if (clip.source?.kind === 'url') {
         const player = new Tone.Player(clip.source.url).connect(this._master);
         player.start(audioTime);
-        window.setTimeout(() => player.dispose(), 2500);
+        // Dispose after calculated duration + buffer
+        setTimeout(() => {
+          try { player.dispose(); } catch { /* ignore */ }
+        }, disposeMs);
       }
 
-      const bars = typeof clip.source?.bars === 'number' ? clip.source.bars : 0.5;
-      const barSeconds = Tone.Time('1m').toSeconds();
-      const durationMs = Math.max(120, Math.floor(bars * barSeconds * 1000));
-      window.setTimeout(() => this._setClipState(clip.id, 'idle'), durationMs);
+      // Update state after playback duration
+      setTimeout(() => this._setClipState(clip.id, 'idle'), durationMs);
     });
   }
 
@@ -435,5 +443,172 @@ export class AudioEngine {
       this._activeLoopByColumn.set(column, clip.id);
       this._startLoopAt(clip.id, { audioTime, transportTick });
     });
+  }
+
+  // =========================================================================
+  // GAME MODE: Preview clip for Simon Says demonstration
+  // =========================================================================
+
+  /**
+   * Calculate the duration of a clip in milliseconds based on bars and current BPM.
+   * @param {object} clip - The clip object
+   * @returns {number} Duration in milliseconds
+   */
+  _getClipDurationMs(clip) {
+    const bars = clip.source?.bars ?? 1;
+    const bpm = Tone.Transport.bpm.value;
+    const beatsPerBar = Tone.Transport.timeSignature;
+    const secondsPerBeat = 60 / bpm;
+    const secondsPerBar = secondsPerBeat * beatsPerBar;
+    return Math.round(bars * secondsPerBar * 1000);
+  }
+
+  /**
+   * Get the duration of a clip in milliseconds.
+   * @param {string} clipId - The clip ID
+   * @returns {number} Duration in ms, or 1000 as fallback
+   */
+  getClipDurationMs(clipId) {
+    const entry = this._clipIndex.get(clipId);
+    if (!entry) return 1000;
+    return this._getClipDurationMs(entry.clip);
+  }
+
+  /**
+   * Play a clip as an overlay (fire-and-forget). The clip plays to completion
+   * and auto-disposes. Multiple clips can layer on top of each other.
+   * @param {string} clipId - The clip ID to play
+   * @returns {Promise<void>} - Resolves immediately after starting playback
+   */
+  async playClipOverlay(clipId) {
+    const entry = this._clipIndex.get(clipId);
+    if (!entry) return;
+
+    const { clip } = entry;
+    if (!clip.source) return;
+
+    const durationMs = this._getClipDurationMs(clip);
+    const now = Tone.now();
+
+    if (clip.source.kind === 'url') {
+      const player = new Tone.Player(clip.source.url);
+      player.loop = false;
+      player.connect(this._master);
+      
+      // Wait for buffer to load if needed
+      await new Promise((resolve) => {
+        if (player.loaded) {
+          resolve();
+        } else {
+          player.buffer.onload = resolve;
+          setTimeout(resolve, 500);
+        }
+      });
+
+      player.start(now);
+
+      // Auto-dispose after playback completes (fire and forget)
+      setTimeout(() => {
+        try {
+          player.stop(Tone.now() + 0.05);
+          setTimeout(() => {
+            try { player.dispose(); } catch { /* ignore */ }
+          }, 100);
+        } catch {
+          try { player.dispose(); } catch { /* ignore */ }
+        }
+      }, durationMs);
+
+      return; // Return immediately, don't wait for playback to finish
+    }
+
+    if (clip.source.kind === 'generated') {
+      playGeneratedOneShot(clip.source.generator, { destination: this._master, time: now });
+    }
+  }
+
+  /**
+   * Play a clip's full loop immediately (bypassing quantization).
+   * Used in Game Mode to demonstrate sequences without affecting the main transport.
+   * @param {string} clipId - The clip ID to preview
+   * @param {number} [overrideDurationMs] - Optional override duration (if not provided, plays full loop)
+   * @returns {Promise<void>} - Resolves when the preview is complete
+   */
+  async previewClip(clipId, overrideDurationMs = null) {
+    const entry = this._clipIndex.get(clipId);
+    if (!entry) return;
+
+    const { clip } = entry;
+    if (!clip.source) return;
+
+    // Calculate full loop duration or use override
+    const durationMs = overrideDurationMs ?? this._getClipDurationMs(clip);
+
+    const now = Tone.now();
+
+    if (clip.source.kind === 'url') {
+      const player = new Tone.Player(clip.source.url);
+      player.loop = false; // Play once, not continuously
+      player.connect(this._master);
+      
+      // Wait for buffer to load if needed
+      await new Promise((resolve) => {
+        if (player.loaded) {
+          resolve();
+        } else {
+          player.buffer.onload = resolve;
+          // Fallback timeout
+          setTimeout(resolve, 500);
+        }
+      });
+
+      player.start(now);
+
+      // Schedule stop after full loop duration
+      const fadeTime = 0.05;
+      
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          try {
+            player.stop(Tone.now() + fadeTime);
+            setTimeout(() => {
+              try { player.dispose(); } catch { /* ignore */ }
+            }, 100);
+          } catch {
+            try { player.dispose(); } catch { /* ignore */ }
+          }
+          resolve();
+        }, durationMs);
+      });
+    }
+
+    if (clip.source.kind === 'generated') {
+      playGeneratedOneShot(clip.source.generator, { destination: this._master, time: now });
+      return new Promise((resolve) => setTimeout(resolve, durationMs));
+    }
+  }
+
+  /**
+   * Get all playable clip IDs (loops and one-shots, excluding stops)
+   * Used by Game Mode to build random sequences
+   * @returns {string[]} Array of clip IDs
+   */
+  getPlayableClipIds() {
+    const ids = [];
+    for (const [clipId, { clip }] of this._clipIndex.entries()) {
+      if (clip.type === 'loop' || clip.type === 'oneShot') {
+        ids.push(clipId);
+      }
+    }
+    return ids;
+  }
+
+  /**
+   * Get clip info by ID
+   * @param {string} clipId 
+   * @returns {{ clip, column, isCustom, track } | undefined}
+   */
+  getClipInfo(clipId) {
+    return this._clipIndex.get(clipId);
   }
 }

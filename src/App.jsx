@@ -1,40 +1,66 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import './App.css';
 
 import { AudioEngine } from './engine/AudioEngine';
 import { getDemoProject } from './engine/demoProject';
 import { buildCustomGridPads, buildMainGridPads } from './engine/buildPads';
-import { PadState } from './ui/padStates';
+import { PadState, GamePhase } from './ui/padStates';
 import { TopBar } from './ui/TopBar';
 import { LaunchpadGrid } from './ui/LaunchpadGrid';
 
-const TEMPO_PRESETS = [90, 100, 160];
+// Fixed tempo - 130 BPM
+const FIXED_BPM = 130;
+// Fixed quantization - always 1 bar
+const FIXED_QUANTIZATION = '1m';
 
-function snapTempoToPreset(value) {
-  const n = Number(value);
-  if (!Number.isFinite(n)) return TEMPO_PRESETS[1];
-  let best = TEMPO_PRESETS[0];
-  let bestDist = Math.abs(n - best);
-  for (const preset of TEMPO_PRESETS) {
-    const d = Math.abs(n - preset);
-    if (d < bestDist) {
-      best = preset;
-      bestDist = d;
-    }
-  }
-  return best;
-}
+// Game configuration
+const GAME_CONFIG = {
+  demoHighlightMs: 800,    // How long each pad stays highlighted during demo
+  demoGapMs: 200,          // Gap between demo notes (loops layer on top of each other)
+  feedbackDurationMs: 400, // How long correct/incorrect feedback shows
+  levelUpDelayMs: 2000,    // Delay before next level starts (2 seconds)
+  gameOverDelayMs: 2000,   // Delay before allowing restart
+};
 
 const App = () => {
   const engineRef = useRef(null);
 
+  // =========================================================================
+  // CORE STATE (Freestyle Mode)
+  // =========================================================================
   const [project, setProject] = useState(() => getDemoProject());
-  const [tempoPreset, setTempoPreset] = useState(() => snapTempoToPreset(project.global.bpm ?? 100));
-  const [quantization, setQuantization] = useState(() => project.global.quantization ?? '1m');
   const [clipStatesById, setClipStatesById] = useState(() => new Map());
   const [isPlaying, setIsPlaying] = useState(false);
   const [audioReady, setAudioReady] = useState(false);
 
+  // =========================================================================
+  // GAME MODE STATE
+  // =========================================================================
+  const [appMode, setAppMode] = useState('freestyle'); // 'freestyle' | 'game'
+  const [gamePhase, setGamePhase] = useState(GamePhase.inactive);
+  const [gameLevel, setGameLevel] = useState(1);
+  const [gameScore, setGameScore] = useState(0);
+  const [gameSequence, setGameSequence] = useState([]); // Array of clipIds
+  const [playerProgress, setPlayerProgress] = useState(0); // Index in sequence
+  const [gameHighlightedPads, setGameHighlightedPads] = useState(new Set());
+  const [gameFeedbackPads, setGameFeedbackPads] = useState(new Map());
+  
+  // Track playable clips for game selection
+  const playableClipIds = useRef([]);
+  
+  // Ref to track if game sequence should be aborted
+  const gameAbortRef = useRef(false);
+  // Ref to track current game phase (avoid stale closures)
+  const gamePhaseRef = useRef(GamePhase.inactive);
+  
+  // Keep ref in sync with state
+  useEffect(() => {
+    gamePhaseRef.current = gamePhase;
+  }, [gamePhase]);
+
+  // =========================================================================
+  // ENGINE INITIALIZATION
+  // =========================================================================
   useEffect(() => {
     const engine = new AudioEngine({
       onClipStateChange: (clipId, state) => {
@@ -48,9 +74,12 @@ const App = () => {
 
     engineRef.current = engine;
     engine.loadProject(project);
-    engine.setBpm(tempoPreset);
+    engine.setBpm(FIXED_BPM);
     engine.setTimeSignature(project.global.timeSignature ?? [4, 4]);
-    engine.setQuantization(quantization);
+    engine.setQuantization(FIXED_QUANTIZATION);
+
+    // Cache playable clip IDs
+    playableClipIds.current = engine.getPlayableClipIds();
 
     return () => {
       engine.dispose();
@@ -62,22 +91,14 @@ const App = () => {
   useEffect(() => {
     const engine = engineRef.current;
     if (!engine) return;
-    engine.setBpm(tempoPreset);
-  }, [tempoPreset]);
-
-  useEffect(() => {
-    const engine = engineRef.current;
-    if (!engine) return;
-    engine.setQuantization(quantization);
-  }, [quantization]);
-
-  useEffect(() => {
-    const engine = engineRef.current;
-    if (!engine) return;
     engine.loadProject(project);
     engine.setTimeSignature(project.global.timeSignature ?? [4, 4]);
+    playableClipIds.current = engine.getPlayableClipIds();
   }, [project]);
 
+  // =========================================================================
+  // MEMOIZED UI DATA
+  // =========================================================================
   const mainPads = useMemo(
     () => buildMainGridPads(project, clipStatesById),
     [project, clipStatesById]
@@ -147,6 +168,9 @@ const App = () => {
     return activity;
   }, [project, clipStatesById]);
 
+  // =========================================================================
+  // AUDIO INITIALIZATION
+  // =========================================================================
   const ensureAudioReady = async () => {
     if (audioReady) return true;
     const engine = engineRef.current;
@@ -160,6 +184,9 @@ const App = () => {
     }
   };
 
+  // =========================================================================
+  // FREESTYLE MODE HANDLERS
+  // =========================================================================
   const handleToggleTransport = async () => {
     const engine = engineRef.current;
     if (!engine) return;
@@ -176,7 +203,7 @@ const App = () => {
     }
   };
 
-  const handlePadClick = async (clipId) => {
+  const handleFreestylePadClick = async (clipId) => {
     const engine = engineRef.current;
     if (!engine) return;
     const ok = await ensureAudioReady();
@@ -190,6 +217,218 @@ const App = () => {
 
     engine.triggerClip(clipId);
   };
+
+  // =========================================================================
+  // GAME MODE LOGIC
+  // =========================================================================
+
+  // Generate a new sequence for the current level
+  const generateSequence = useCallback((level) => {
+    const availableClips = playableClipIds.current;
+    if (availableClips.length === 0) return [];
+    
+    const sequence = [];
+    for (let i = 0; i < level; i++) {
+      const randomClip = availableClips[Math.floor(Math.random() * availableClips.length)];
+      sequence.push(randomClip);
+    }
+    return sequence;
+  }, []);
+
+  // Play the demonstration sequence
+  const playDemoSequence = useCallback(async (sequence) => {
+    const engine = engineRef.current;
+    if (!engine) return;
+
+    // Mark sequence as active
+    gameAbortRef.current = false;
+    setGamePhase(GamePhase.demonstrating);
+
+    for (let i = 0; i < sequence.length; i++) {
+      // Check if aborted
+      if (gameAbortRef.current) {
+        setGameHighlightedPads(new Set());
+        return;
+      }
+      
+      const clipId = sequence[i];
+      
+      // Highlight the pad
+      setGameHighlightedPads(new Set([clipId]));
+      
+      // Play the full loop (fire-and-forget, layers on top of any playing loops)
+      engine.playClipOverlay(clipId);
+      
+      // Keep highlight visible for a moment
+      await new Promise(resolve => setTimeout(resolve, GAME_CONFIG.demoHighlightMs));
+      
+      // Check if aborted
+      if (gameAbortRef.current) {
+        setGameHighlightedPads(new Set());
+        return;
+      }
+      
+      // Clear highlight
+      setGameHighlightedPads(new Set());
+      
+      // Gap before next note (unless last note)
+      if (i < sequence.length - 1) {
+        await new Promise(resolve => setTimeout(resolve, GAME_CONFIG.demoGapMs));
+      }
+    }
+
+    // Check if aborted before switching to input
+    if (gameAbortRef.current) return;
+
+    // Delay then switch to input phase
+    await new Promise(resolve => setTimeout(resolve, 400));
+    
+    if (!gameAbortRef.current) {
+      setGamePhase(GamePhase.waitingForInput);
+      setPlayerProgress(0);
+    }
+  }, []);
+
+  // Start a new game
+  const handleStartGame = useCallback(async () => {
+    // Abort any running sequence
+    gameAbortRef.current = true;
+    await new Promise(resolve => setTimeout(resolve, 50));
+    
+    const ok = await ensureAudioReady();
+    if (!ok) return;
+
+    // Stop any running transport
+    const engine = engineRef.current;
+    if (engine?.isTransportRunning()) {
+      engine.stopTransport();
+      setIsPlaying(false);
+      setClipStatesById(new Map());
+    }
+
+    // Reset game state
+    setGameLevel(1);
+    setGameScore(0);
+    setPlayerProgress(0);
+    setGameFeedbackPads(new Map());
+    setGameHighlightedPads(new Set());
+
+    // Generate and play first sequence
+    const sequence = generateSequence(1);
+    setGameSequence(sequence);
+
+    // Small delay then start demo
+    await new Promise(resolve => setTimeout(resolve, 400));
+    await playDemoSequence(sequence);
+  }, [ensureAudioReady, generateSequence, playDemoSequence]);
+
+  // Handle player input in game mode
+  const handleGamePadClick = useCallback(async (clipId) => {
+    // Use ref to check phase to avoid stale closure
+    if (gamePhaseRef.current !== GamePhase.waitingForInput) return;
+
+    const engine = engineRef.current;
+    if (!engine) return;
+
+    const expectedClipId = gameSequence[playerProgress];
+    const isCorrect = clipId === expectedClipId;
+
+    // Play the full loop (layers on top of any playing loops)
+    engine.playClipOverlay(clipId);
+
+    if (isCorrect) {
+      // Show correct feedback
+      setGameFeedbackPads(new Map([[clipId, 'correct']]));
+      
+      setTimeout(() => {
+        setGameFeedbackPads(new Map());
+      }, GAME_CONFIG.feedbackDurationMs);
+
+      const newProgress = playerProgress + 1;
+      setPlayerProgress(newProgress);
+
+      // Check if sequence complete
+      if (newProgress >= gameSequence.length) {
+        // Level complete!
+        setGamePhase(GamePhase.success);
+        const levelScore = gameLevel * 10;
+        setGameScore(prev => prev + levelScore);
+
+        // Start next level after delay
+        setTimeout(async () => {
+          const nextLevel = gameLevel + 1;
+          setGameLevel(nextLevel);
+          setPlayerProgress(0);
+          
+          const newSequence = generateSequence(nextLevel);
+          setGameSequence(newSequence);
+          
+          await playDemoSequence(newSequence);
+        }, GAME_CONFIG.levelUpDelayMs);
+      }
+    } else {
+      // Wrong! Game Over
+      setGameFeedbackPads(new Map([[clipId, 'incorrect']]));
+      setGamePhase(GamePhase.gameOver);
+
+      // Clear feedback after delay
+      setTimeout(() => {
+        setGameFeedbackPads(new Map());
+      }, GAME_CONFIG.gameOverDelayMs);
+    }
+  }, [gameSequence, playerProgress, gameLevel, generateSequence, playDemoSequence]);
+
+  // Reset game to ready state
+  const handleResetGame = useCallback(() => {
+    // Abort any running sequence
+    gameAbortRef.current = true;
+    
+    setGamePhase(GamePhase.ready);
+    setGameLevel(1);
+    setGameScore(0);
+    setGameSequence([]);
+    setPlayerProgress(0);
+    setGameFeedbackPads(new Map());
+    setGameHighlightedPads(new Set());
+  }, []);
+
+  // Handle mode change
+  const handleModeChange = useCallback((mode) => {
+    // Abort any running game sequence
+    gameAbortRef.current = true;
+    
+    // Stop transport when switching modes
+    const engine = engineRef.current;
+    if (engine?.isTransportRunning()) {
+      engine.stopTransport();
+      setIsPlaying(false);
+      setClipStatesById(new Map());
+    }
+
+    setAppMode(mode);
+    
+    if (mode === 'game') {
+      setGamePhase(GamePhase.ready);
+      setGameLevel(1);
+      setGameScore(0);
+      setGameSequence([]);
+      setPlayerProgress(0);
+    } else {
+      setGamePhase(GamePhase.inactive);
+    }
+    
+    setGameFeedbackPads(new Map());
+    setGameHighlightedPads(new Set());
+  }, []);
+
+  // Unified pad click handler
+  const handlePadClick = useCallback(async (clipId) => {
+    if (appMode === 'game') {
+      await handleGamePadClick(clipId);
+    } else {
+      await handleFreestylePadClick(clipId);
+    }
+  }, [appMode, handleGamePadClick, handleFreestylePadClick]);
 
   // Ensure empty clip states default to idle.
   useEffect(() => {
@@ -207,28 +446,40 @@ const App = () => {
     });
   }, [project]);
 
+  // Determine if input should be disabled
+  const disableInput = appMode === 'game' && 
+    (gamePhase === GamePhase.demonstrating || 
+     gamePhase === GamePhase.success || 
+     gamePhase === GamePhase.gameOver);
+
   return (
     <div className="lp-app">
       <TopBar
-        tempoPreset={tempoPreset}
-        quantization={quantization}
         isPlaying={isPlaying}
         onToggleTransport={handleToggleTransport}
-        onTempoPresetChange={(next) => setTempoPreset(snapTempoToPreset(next))}
-        onQuantizationChange={setQuantization}
+        appMode={appMode}
+        onModeChange={handleModeChange}
+        gamePhase={gamePhase}
+        gameLevel={gameLevel}
+        gameScore={gameScore}
+        onStartGame={handleStartGame}
+        onResetGame={handleResetGame}
       />
 
       <main className="lp-main">
         <LaunchpadGrid
-          title={project.name}
+          title={appMode === 'game' ? `Memory Game - Level ${gameLevel}` : project.name}
           columns={project.grid.columns}
           rows={project.grid.rows}
           pads={mainPads}
           onPadClick={handlePadClick}
           columnLabels={columnLabels}
           columnColors={columnColors}
-          columnActivity={mainColumnActivity}
+          columnActivity={appMode === 'freestyle' ? mainColumnActivity : Array(project.grid.columns).fill('idle')}
           variant="main"
+          gameHighlightedPads={gameHighlightedPads}
+          gameFeedbackPads={gameFeedbackPads}
+          disableInput={disableInput}
         />
 
         <LaunchpadGrid
@@ -239,11 +490,13 @@ const App = () => {
           onPadClick={handlePadClick}
           columnLabels={Array(project.customGrid.columns).fill('')}
           columnColors={Array(project.customGrid.columns).fill('#2f3542')}
-          columnActivity={customColumnActivity}
+          columnActivity={appMode === 'freestyle' ? customColumnActivity : Array(project.customGrid.columns).fill('idle')}
           variant="custom"
+          gameHighlightedPads={gameHighlightedPads}
+          gameFeedbackPads={gameFeedbackPads}
+          disableInput={disableInput}
         />
       </main>
-
     </div>
   );
 };

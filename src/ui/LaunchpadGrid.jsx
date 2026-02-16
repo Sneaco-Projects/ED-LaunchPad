@@ -30,6 +30,10 @@ export function LaunchpadGrid({
   columnColors,
   columnActivity,
   variant = 'main',
+  // Game mode props
+  gameHighlightedPads = new Set(), // Set of clipIds currently highlighted for demo
+  gameFeedbackPads = new Map(),    // Map<clipId, 'correct' | 'incorrect'>
+  disableInput = false,            // Disable pad clicks during demo phase
 }) {
   return (
     <section className={`lp-section lp-section--${variant}`}>
@@ -63,7 +67,20 @@ export function LaunchpadGrid({
           const key = `${col}:${row}`;
           const pad = pads.get(key);
 
-          const state = pad?.state ?? 'idle';
+          // Determine pad state - check game states first
+          let state = pad?.state ?? 'idle';
+          const isGameHighlighted = pad && gameHighlightedPads.has(pad.id);
+          const gameFeedback = pad ? gameFeedbackPads.get(pad.id) : null;
+          
+          // Game states override normal states
+          if (gameFeedback === 'correct') {
+            state = 'correct';
+          } else if (gameFeedback === 'incorrect') {
+            state = 'incorrect';
+          } else if (isGameHighlighted) {
+            state = 'demo';
+          }
+
           const isStop = pad?.type === 'stop';
           const colColor = columnColors?.[col] ?? 'rgba(255,255,255,0.12)';
           const badge =
@@ -75,19 +92,27 @@ export function LaunchpadGrid({
                   : ''
               : '';
 
+          // Build class names
+          const padClasses = [
+            'lp-pad',
+            `lp-pad--${state}`,
+            isStop ? 'lp-pad--stop' : '',
+            disableInput ? 'lp-pad--disabled-input' : '',
+          ].filter(Boolean).join(' ');
+
           return (
             <button
               key={key}
               type="button"
-              className={`lp-pad lp-pad--${state} ${isStop ? 'lp-pad--stop' : ''}`}
+              className={padClasses}
               style={{
                 '--col': colColor,
                 '--col-rgb': hexToRgbTriplet(colColor),
                 borderColor: colColor,
                 background: isStop ? 'rgba(255,255,255,0.06)' : undefined,
               }}
-              onClick={() => pad?.id && onPadClick(pad.id)}
-              disabled={!pad}
+              onClick={() => !disableInput && pad?.id && onPadClick(pad.id)}
+              disabled={!pad || disableInput}
               title={pad?.name ?? ''}
             >
               <div className="lp-pad__label">

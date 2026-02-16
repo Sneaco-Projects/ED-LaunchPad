@@ -1,6 +1,6 @@
-import phonkProject from '../projects/phonkProject.json';
+import brazilianFunkProject from '../projects/brazilianFunkProject.json';
 import { normalizeProject } from './ProjectLoader';
 
 export function getDemoProject() {
-  return normalizeProject(phonkProject);
+  return normalizeProject(brazilianFunkProject);
 }

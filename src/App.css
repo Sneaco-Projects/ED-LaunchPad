@@ -49,26 +49,19 @@
   background: rgba(255, 255, 255, 0.12);
 }
 
+.lp-btn--transport {
+  min-width: 80px;
+  font-weight: 600;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.08));
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.lp-btn--transport:hover {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0.12));
+}
+
 .lp-btn--secondary {
   background: rgba(255, 255, 255, 0.06);
-}
-
-.lp-field {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 12px;
-  color: rgba(255, 255, 255, 0.75);
-}
-
-.lp-input,
-.lp-select {
-  height: 36px;
-  border-radius: 10px;
-  padding: 0 10px;
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  background: rgba(255, 255, 255, 0.06);
-  color: rgba(255, 255, 255, 0.92);
 }
 
 .lp-main {
@@ -237,4 +230,274 @@
 
 .lp-hidden {
   display: none;
+}
+
+/* =========================================================================
+   GAME MODE STYLES
+   ========================================================================= */
+
+/* Mode Toggle */
+.lp-mode-toggle {
+  display: flex;
+  gap: 2px;
+  margin-left: 16px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 8px;
+  padding: 3px;
+}
+
+.lp-mode-btn {
+  padding: 6px 12px;
+  border: none;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 12px;
+  font-weight: 500;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.lp-mode-btn:hover {
+  color: rgba(255, 255, 255, 0.85);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.lp-mode-btn--active {
+  background: rgba(255, 255, 255, 0.12);
+  color: rgba(255, 255, 255, 0.95);
+}
+
+/* Game Stats Display */
+.lp-game-stats {
+  display: flex;
+  gap: 16px;
+}
+
+.lp-game-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 4px 12px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 8px;
+  min-width: 60px;
+}
+
+.lp-game-stat__label {
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.5);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.lp-game-stat__value {
+  font-size: 18px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.95);
+}
+
+/* Game Status Messages */
+.lp-game-status {
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 14px;
+  animation: lpFadeIn 0.3s ease;
+}
+
+.lp-game-status--demo {
+  background: rgba(30, 144, 255, 0.2);
+  color: #5dade2;
+  animation: lpPulseText 1s ease-in-out infinite;
+}
+
+.lp-game-status--input {
+  background: rgba(46, 213, 115, 0.2);
+  color: #2ed573;
+}
+
+.lp-game-status--success {
+  background: rgba(46, 213, 115, 0.25);
+  color: #2ed573;
+  animation: lpSuccessPulse 0.5s ease;
+}
+
+.lp-game-status--gameover {
+  background: rgba(255, 71, 87, 0.25);
+  color: #ff4757;
+  animation: lpShake 0.5s ease;
+}
+
+/* Game Buttons */
+.lp-btn--game-start {
+  background: linear-gradient(135deg, rgba(46, 213, 115, 0.3), rgba(46, 213, 115, 0.15));
+  border-color: rgba(46, 213, 115, 0.4);
+  color: #2ed573;
+  font-weight: 600;
+}
+
+.lp-btn--game-start:hover {
+  background: linear-gradient(135deg, rgba(46, 213, 115, 0.4), rgba(46, 213, 115, 0.25));
+}
+
+.lp-btn--game-reset {
+  background: rgba(255, 255, 255, 0.08);
+  margin-left: 12px;
+}
+
+/* Game Pad States */
+.lp-pad--demo {
+  background: linear-gradient(135deg, rgba(0, 200, 255, 0.6), rgba(120, 80, 255, 0.5)) !important;
+  box-shadow: 
+    0 0 0 4px rgba(0, 200, 255, 0.8),
+    0 0 40px rgba(0, 200, 255, 0.7),
+    0 0 80px rgba(120, 80, 255, 0.5),
+    inset 0 0 30px rgba(255, 255, 255, 0.3) !important;
+  transform: scale(1.08);
+  animation: lpDemoPulse 0.5s ease-out;
+  z-index: 10;
+  border-color: rgba(255, 255, 255, 0.9) !important;
+}
+
+.lp-pad--correct {
+  background: linear-gradient(135deg, rgba(46, 213, 115, 0.7), rgba(0, 255, 150, 0.5)) !important;
+  box-shadow: 
+    0 0 0 4px rgba(46, 213, 115, 0.9),
+    0 0 40px rgba(46, 213, 115, 0.8),
+    0 0 70px rgba(0, 255, 150, 0.5),
+    inset 0 0 25px rgba(255, 255, 255, 0.3) !important;
+  animation: lpCorrectFlash 0.4s ease;
+  z-index: 10;
+}
+
+.lp-pad--incorrect {
+  background: linear-gradient(135deg, rgba(255, 71, 87, 0.7), rgba(255, 100, 100, 0.5)) !important;
+  box-shadow: 
+    0 0 0 4px rgba(255, 71, 87, 0.9),
+    0 0 40px rgba(255, 71, 87, 0.8),
+    0 0 70px rgba(255, 100, 100, 0.5),
+    inset 0 0 25px rgba(255, 255, 255, 0.2) !important;
+  animation: lpIncorrectShake 0.4s ease;
+  z-index: 10;
+}
+
+.lp-pad--disabled-input {
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+/* Game Animations */
+@keyframes lpFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes lpPulseText {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+@keyframes lpDemoPulse {
+  0% {
+    transform: scale(0.95);
+    filter: brightness(1);
+  }
+  30% {
+    transform: scale(1.12);
+    filter: brightness(1.4);
+  }
+  60% {
+    transform: scale(1.06);
+    filter: brightness(1.2);
+  }
+  100% {
+    transform: scale(1.08);
+    filter: brightness(1.1);
+  }
+}
+
+@keyframes lpCorrectFlash {
+  0% {
+    transform: scale(0.95);
+    filter: brightness(1);
+  }
+  30% {
+    transform: scale(1.12);
+    filter: brightness(1.5);
+  }
+  60% {
+    transform: scale(1.05);
+    filter: brightness(1.3);
+  }
+  100% {
+    transform: scale(1);
+    filter: brightness(1.1);
+  }
+}
+
+@keyframes lpIncorrectShake {
+  0%, 100% {
+    transform: translateX(0);
+    filter: brightness(1);
+  }
+  10% {
+    transform: translateX(-8px);
+    filter: brightness(1.3);
+  }
+  30% {
+    transform: translateX(8px);
+    filter: brightness(1.2);
+  }
+  50% {
+    transform: translateX(-6px);
+    filter: brightness(1.3);
+  }
+  70% {
+    transform: translateX(6px);
+    filter: brightness(1.1);
+  }
+  90% {
+    transform: translateX(-3px);
+  }
+}
+
+@keyframes lpSuccessPulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes lpShake {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  20% {
+    transform: translateX(-4px);
+  }
+  40% {
+    transform: translateX(4px);
+  }
+  60% {
+    transform: translateX(-3px);
+  }
+  80% {
+    transform: translateX(3px);
+  }
 }
