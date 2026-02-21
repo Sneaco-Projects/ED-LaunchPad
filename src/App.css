@@ -51,8 +51,10 @@
 
 .lp-topbar__right {
   display: flex;
+  align-items: center;
   justify-content: flex-end;
   gap: 10px;
+  position: relative; /* anchor for the hamburger dropdown */
 }
 
 .lp-btn {
@@ -330,121 +332,111 @@
   display: none;
 }
 
+/* ── Responsive visibility helpers ── */
+/* Mobile-only items hidden by default; desktop-only items always shown */
+.lp-mobile-only { display: none !important; }
 
-@media (max-width: 520px) {
-  /* Switch topbar from 3-column grid to wrapping flex */
+/* ══════════════════════════════════════════════════════════════════════════
+   GAME STATUS BANNER (mobile only — sits below the navbar)
+════════════════════════════════════════════════════════════════════════════ */
+.lp-game-banner {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 7px 16px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-align: center;
+  animation: lpFadeIn 0.25s ease;
+  border-bottom: 1px solid transparent;
+}
+.lp-game-banner--demo {
+  background: rgba(56, 189, 248, 0.12);
+  color: #38bdf8;
+  border-bottom-color: rgba(56, 189, 248, 0.25);
+}
+.lp-game-banner--input {
+  background: rgba(74, 222, 128, 0.12);
+  color: #4ade80;
+  border-bottom-color: rgba(74, 222, 128, 0.25);
+}
+.lp-game-banner--success {
+  background: rgba(251, 191, 36, 0.12);
+  color: #fbbf24;
+  border-bottom-color: rgba(251, 191, 36, 0.25);
+}
+.lp-game-banner--gameover {
+  background: rgba(248, 113, 113, 0.12);
+  color: #f87171;
+  border-bottom-color: rgba(248, 113, 113, 0.25);
+}
+
+@media (max-width: 767px) {
+  /* Flip visibility */
+  .lp-desktop-only { display: none !important; }
+  .lp-mobile-only  { display: flex !important; }
+
+  /* In freestyle mode, collapse the center transport row — it moves to the hamburger */
+  .lp-topbar--freestyle .lp-topbar__center { display: none !important; }
+
+  /* Topbar: single row on mobile — LEFT takes all free space, RIGHT stays end */
   .lp-topbar {
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
+    align-items: center;
     padding: 6px 10px;
-    gap: 6px;
-    row-gap: 4px;
-  }
-
-  /* Row 1: brand + mode toggle — full width */
-  .lp-topbar__left {
-    flex: 1 1 100%;          /* takes the entire first line */
-    justify-content: flex-start;
     gap: 8px;
   }
+  .lp-topbar__left {
+    flex: 1;
+    min-width: 0;
+    gap: 8px;
+  }
+  .lp-topbar__center {
+    /* game-mode status messages stay; freestyle center is hidden above */
+    flex: none;
+    justify-content: center;
+  }
+  .lp-topbar__right {
+    flex: none;
+  }
+  .lp-mode-label { display: none; }
+}
 
-  /* Shrink logo slightly so pills have more room */
+/* ── Narrow-phone tweaks (≤ 520px) — grid stretch + tap targets ── */
+@media (max-width: 520px) {
+  /* Logo + brand shrink to leave more room for the mode pill */
   .lp-logo  { width: 22px; height: 22px; }
   .lp-brand { font-size: 13px; }
 
-  /* Mode toggle pill stretches to fill remaining left-row space */
-  .lp-mode-toggle {
-    flex: 1;
-    justify-content: stretch;
-  }
-
-  /* Each mode button fills half the pill so it is easy to tap */
+  /* Mode toggle pill: each button fills half and hits 48px tap target */
+  .lp-mode-toggle { flex: 1; justify-content: stretch; }
   .lp-mode-btn {
     flex: 1;
     padding: 10px 8px;
-    min-height: 48px;   /* generous tap target — reasserted over base 44px */
+    min-height: 48px;
     font-size: 13px;
     text-align: center;
   }
 
-  /* MODE: FREESTYLE label is redundant when the pill shows state — hide it */
-  .lp-mode-label { display: none; }
-
-  /* Row 2: transport center + right HUD share the second line */
-  .lp-topbar__center {
-    flex: 1;
-    justify-content: flex-start;
-    align-items: center;   /* vertically center Play/Record with the HUD */
-    gap: 8px;
-  }
-
-  .lp-topbar__right {
-    flex: none;
-    align-items: center;
-  }
-
-  /* Transport & Record — meet the 44px min touch target on mobile */
-  .lp-btn--transport {
-    min-width: 60px;
-    min-height: 44px;
-    padding: 8px 14px;
-    font-size: 13px;
-  }
-  .lp-btn--record {
-    min-height: 44px;
-    padding: 8px 12px;
-    font-size: 13px;
-  }
-
-  /* Game HUD stat boxes — slightly smaller on mobile */
-  .lp-game-stat {
-    padding: 4px 10px;
-    min-width: 48px;
-  }
+  /* Game HUD stat boxes — slightly smaller */
+  .lp-game-stat      { padding: 4px 10px; min-width: 48px; }
   .lp-game-stat__value { font-size: 18px; }
 
-  /* Tutorial button: icon only — label hidden saves horizontal space */
-  .lp-btn--tutorial {
-    padding: 8px 10px;
-  }
-
-  /* ── Grid: stretch to fill remaining viewport height ──────────────────────
-   * Chain: lp-main (stretch) → lp-section (flex:1) → lp-grid-wrapper (flex:1)
-   * → lp-grid (flex:1). Grid rows divide the available height equally so
-   * pads grow tall — bigger touch targets — rather than leaving dead space.
-   */
-  .lp-main {
-    align-items: stretch;
-    padding: 4px 8px;
-  }
-
+  /* ── Grid: stretch to fill remaining viewport height ── */
+  .lp-main { align-items: stretch; padding: 4px 8px; }
   .lp-section {
     flex: 1;
     min-height: 0;
-    /* Full width on narrow screens; desktop math-width no longer applies */
     width: 100%;
     max-width: 100%;
   }
-
-  .lp-grid-wrapper {
-    flex: 1;
-    min-height: 0;
-  }
-
-  .lp-grid {
-    /* Override the desktop fixed height; fill whatever the wrapper provides */
-    height: 100%;
-    flex: 1;
-    min-height: 0;
-  }
-
-  /* Pads: drop the square aspect-ratio constraint so they expand vertically
-   * to fill each grid row, giving larger tap surfaces on mobile. */
+  .lp-grid-wrapper { flex: 1; min-height: 0; }
+  .lp-grid          { height: 100%; flex: 1; min-height: 0; }
   .lp-pad,
-  .lp-pad--ghost {
-    aspect-ratio: unset;
-    height: 100%;
-  }
+  .lp-pad--ghost    { aspect-ratio: unset; height: 100%; }
 }
 
 /* =========================================================================
@@ -1012,5 +1004,658 @@
 .tm-cta:active {
   transform: translateY(0);
   filter: brightness(0.97);
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   TOPBAR ACCOUNT BUTTON
+════════════════════════════════════════════════════════════════════════════ */
+.lp-btn--account {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255 255 255 / 0.25);
+  background: rgba(255 255 255 / 0.06);
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, box-shadow 0.15s;
+  flex-shrink: 0;
+}
+.lp-btn--account:hover {
+  background: rgba(255 255 255 / 0.14);
+  border-color: rgba(255 255 255 / 0.5);
+  box-shadow: 0 0 10px rgba(168 85 247 / 0.45);
+}
+
+/* Avatar initial circle shown when logged in */
+.lp-account-avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #a855f7, #ec4899);
+  color: #fff;
+  font-size: 0.85rem;
+  font-weight: 700;
+  line-height: 1;
+  pointer-events: none;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   ACCOUNT MODAL  (am-*)
+════════════════════════════════════════════════════════════════════════════ */
+
+/* Backdrop */
+.am-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: rgba(0 0 0 / 0.72);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  animation: amFadeIn 0.18s ease;
+}
+@keyframes amFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* Card */
+.am-modal {
+  position: relative;
+  width: 100%;
+  max-width: 380px;
+  background: #15151e;
+  border: 1px solid rgba(255 255 255 / 0.1);
+  border-radius: 18px;
+  padding: 32px 28px 28px;
+  box-shadow: 0 24px 64px rgba(0 0 0 / 0.7), 0 0 0 1px rgba(168 85 247 / 0.18);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  animation: amSlideUp 0.2s ease;
+}
+@keyframes amSlideUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Header */
+.am-header {
+  text-align: center;
+}
+.am-header__icon {
+  font-size: 2rem;
+  display: block;
+  margin-bottom: 8px;
+}
+.am-title {
+  margin: 0 0 6px;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #f1f1f2;
+}
+.am-subtitle {
+  margin: 0;
+  font-size: 0.82rem;
+  color: rgba(255 255 255 / 0.48);
+}
+
+/* Form */
+.am-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.am-field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.am-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: rgba(255 255 255 / 0.6);
+  text-transform: uppercase;
+}
+
+/* Input row (password has eye toggle) */
+.am-input-wrap {
+  position: relative;
+  display: flex;
+}
+.am-input {
+  width: 100%;
+  padding: 10px 14px;
+  background: rgba(255 255 255 / 0.06);
+  border: 1.5px solid rgba(255 255 255 / 0.12);
+  border-radius: 10px;
+  color: #f1f1f2;
+  font-size: 0.92rem;
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  box-sizing: border-box;
+}
+.am-input-wrap .am-input {
+  padding-right: 44px; /* room for eye btn */
+}
+.am-input::placeholder {
+  color: rgba(255 255 255 / 0.28);
+}
+.am-input:focus {
+  border-color: rgba(168 85 247 / 0.7);
+  box-shadow: 0 0 0 3px rgba(168 85 247 / 0.18);
+}
+
+/* Show/hide password toggle */
+.am-show-pw {
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 100%;
+  width: 42px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255 255 255 / 0.5);
+  transition: color 0.15s;
+}
+.am-show-pw:hover { color: rgba(255 255 255 / 0.9); }
+
+/* Inline error message */
+.am-error {
+  margin: 0;
+  font-size: 0.78rem;
+  color: #f87171;
+  text-align: center;
+}
+
+/* CTA button — pink→purple gradient matching TutorialModal */
+.am-cta {
+  margin-top: 4px;
+  padding: 12px;
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #ec4899, #a855f7);
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: filter 0.15s, transform 0.1s, box-shadow 0.15s;
+  box-shadow: 0 4px 24px rgba(168 85 247 / 0.4);
+}
+.am-cta:hover {
+  filter: brightness(1.1);
+  transform: translateY(-1px);
+}
+.am-cta:active {
+  filter: brightness(0.95);
+  transform: translateY(0);
+}
+
+/* Footer toggle link */
+.am-footer {
+  margin: 0;
+  text-align: center;
+  font-size: 0.8rem;
+  color: rgba(255 255 255 / 0.45);
+}
+.am-link {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #c084fc;
+  font-size: inherit;
+  font-weight: 600;
+  padding: 0;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  transition: color 0.15s;
+}
+.am-link:hover { color: #e879f9; }
+
+/* Mobile tweaks */
+@media (max-width: 520px) {
+  .am-modal {
+    padding: 24px 18px 22px;
+    border-radius: 14px;
+  }
+  .lp-btn--account {
+    width: 40px;
+    height: 40px;
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   ACCOUNT MODAL — PROFILE VIEW
+════════════════════════════════════════════════════════════════════════════ */
+
+/* Large avatar circle */
+.am-profile-avatar {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #a855f7, #ec4899);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0 auto 10px;
+  box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.3), 0 0 24px rgba(168, 85, 247, 0.25);
+}
+
+/* Stats row */
+.am-profile-stats {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 14px;
+  padding: 14px 24px;
+}
+.am-profile-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  flex: 1;
+}
+.am-profile-stat__value {
+  font-size: 1.7rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.95);
+  line-height: 1;
+}
+.am-profile-stat__label {
+  font-size: 0.68rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: rgba(255, 255, 255, 0.38);
+}
+.am-profile-stat__divider {
+  width: 1px;
+  height: 36px;
+  background: rgba(255, 255, 255, 0.1);
+  margin: 0 12px;
+}
+
+/* Logout CTA — red-tinted variant */
+.am-cta--logout {
+  background: rgba(248, 113, 113, 0.12);
+  border: 1px solid rgba(248, 113, 113, 0.35);
+  color: #f87171;
+  box-shadow: none;
+}
+.am-cta--logout:hover {
+  background: rgba(248, 113, 113, 0.2);
+  filter: none;
+  transform: translateY(-1px);
+}
+.am-cta--logout:active {
+  transform: translateY(0);
+  background: rgba(248, 113, 113, 0.28);
+}
+
+/* Close ✕ button — top-right corner */
+.am-close-btn {
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.35);
+  font-size: 1rem;
+  cursor: pointer;
+  line-height: 1;
+  padding: 4px 6px;
+  border-radius: 6px;
+  transition: color 0.15s, background 0.15s;
+}
+.am-close-btn:hover {
+  color: rgba(255, 255, 255, 0.75);
+  background: rgba(255, 255, 255, 0.07);
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   ACCOUNT MODAL — SUCCESS VIEW
+════════════════════════════════════════════════════════════════════════════ */
+
+.am-success {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 0 8px;
+  text-align: center;
+  animation: amFadeIn 0.22s ease;
+}
+
+/* Animated checkmark circle */
+.am-success__circle {
+  width: 80px;
+  height: 80px;
+}
+.am-success__svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.am-success__ring {
+  stroke: rgba(74, 222, 128, 0.3);
+  stroke-width: 2;
+}
+
+.am-success__check {
+  stroke: #4ade80;
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  /* Draw-on animation */
+  stroke-dasharray: 36;
+  stroke-dashoffset: 36;
+  animation: amCheckDraw 0.45s cubic-bezier(0.4, 0, 0.2, 1) 0.15s forwards;
+}
+@keyframes amCheckDraw {
+  to { stroke-dashoffset: 0; }
+}
+
+/* Pulse ring behind the circle */
+.am-success__circle::after {
+  content: '';
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  border: 2px solid rgba(74, 222, 128, 0.25);
+  animation: amRingPulse 1.2s ease-out infinite;
+}
+@keyframes amRingPulse {
+  0%   { transform: scale(1);   opacity: 0.6; }
+  100% { transform: scale(1.4); opacity: 0; }
+}
+
+.am-success__hint {
+  margin: 0;
+  font-size: 0.78rem;
+  color: rgba(255, 255, 255, 0.38);
+}
+
+/* Auto-progress bar */
+.am-success__bar-track {
+  width: 100%;
+  height: 3px;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+  margin-top: 8px;
+}
+.am-success__bar-fill {
+  height: 100%;
+  border-radius: 3px;
+  background: linear-gradient(90deg, #a855f7, #4ade80);
+  transition: width 0.1s linear;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   HAMBURGER BUTTON & DROPDOWN MENU  (mobile ≤ 767px)
+════════════════════════════════════════════════════════════════════════════ */
+
+/* ── Hamburger toggle button ── */
+.lp-hamburger-btn {
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  padding: 8px;
+  flex-shrink: 0;
+}
+
+/* Three bars */
+.lp-hamburger-bar {
+  display: block;
+  width: 20px;
+  height: 2px;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.85);
+  transition: transform 0.22s ease, opacity 0.22s ease, width 0.22s ease;
+  transform-origin: center;
+}
+
+/* Morph into X when open */
+.lp-hamburger-btn--open .lp-hamburger-bar:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+.lp-hamburger-btn--open .lp-hamburger-bar:nth-child(2) {
+  opacity: 0;
+  width: 0;
+}
+.lp-hamburger-btn--open .lp-hamburger-bar:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+/* ── Dropdown panel ── */
+.lp-hamburger-menu {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  z-index: 150;
+  min-width: 230px;
+  background: #15151e;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  padding: 8px;
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.7),
+    0 0 0 1px rgba(168, 85, 247, 0.15);
+  animation: hbSlideDown 0.18s ease;
+}
+
+@keyframes hbSlideDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Each menu row ── */
+.lp-hamburger-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 12px 14px;
+  border: none;
+  border-radius: 10px;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.88);
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.14s, color 0.14s;
+}
+.lp-hamburger-item:hover {
+  background: rgba(255, 255, 255, 0.07);
+  color: #fff;
+}
+.lp-hamburger-item:active {
+  background: rgba(168, 85, 247, 0.15);
+}
+
+/* Recording state highlight */
+.lp-hamburger-item--recording {
+  color: #f87171;
+}
+.lp-hamburger-item--recording:hover {
+  background: rgba(248, 113, 113, 0.1);
+}
+
+/* Icon column */
+.lp-hi-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+
+/* Record dot inside hamburger */
+.lp-hi-record-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #f87171;
+  box-shadow: 0 0 8px rgba(248, 113, 113, 0.6);
+  flex-shrink: 0;
+  margin: auto;
+}
+
+/* Avatar initial inside hamburger */
+.lp-hi-avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #a855f7, #ec4899);
+  color: #fff;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+/* REC badge shown next to the Record item when recording is active */
+.lp-hi-badge {
+  margin-left: auto;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #f87171;
+  background: rgba(248, 113, 113, 0.12);
+  border: 1px solid rgba(248, 113, 113, 0.35);
+  border-radius: 5px;
+  padding: 2px 6px;
+  animation: recPulse 1.2s ease-in-out infinite;
+}
+@keyframes recPulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.45; }
+}
+
+/* Label */
+.lp-hi-label {
+  flex: 1;
+}
+
+/* Thin divider between action items and account row */
+.lp-hi-divider {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.07);
+  margin: 4px 6px;
+}
+
+/* Section header label inside hamburger (e.g. "GAME") */
+.lp-hi-section-label {
+  padding: 6px 14px 2px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: rgba(255, 255, 255, 0.35);
+  text-transform: uppercase;
+}
+
+/* LEVEL / SCORE info row inside hamburger (non-interactive) */
+.lp-hi-stats-row {
+  display: flex;
+  gap: 8px;
+  padding: 10px 12px 6px;
+}
+.lp-hi-stat {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  padding: 8px 12px;
+  gap: 2px;
+}
+.lp-hi-stat__label {
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: rgba(255, 255, 255, 0.4);
+  text-transform: uppercase;
+}
+.lp-hi-stat__value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.95);
+  line-height: 1;
+}
+
+/* Start Game row — teal/green accent */
+.lp-hamburger-item--game-start {
+  color: #4ade80;
+}
+.lp-hamburger-item--game-start:hover {
+  background: rgba(74, 222, 128, 0.1);
+  color: #86efac;
+}
+.lp-hamburger-item--game-start:active {
+  background: rgba(74, 222, 128, 0.18);
+}
+
+/* Play Again row — orange/amber accent */
+.lp-hamburger-item--game-reset {
+  color: #fb923c;
+}
+.lp-hamburger-item--game-reset:hover {
+  background: rgba(251, 146, 60, 0.1);
+  color: #fdba74;
+}
+.lp-hamburger-item--game-reset:active {
+  background: rgba(251, 146, 60, 0.18);
+}
+
+/* Mobile: in game mode, the center status message may be long — truncate */
+@media (max-width: 767px) {
+  /* Center slot in game mode is empty on mobile — status lives in the banner */
+  .lp-topbar--game .lp-topbar__center {
+    display: none !important;
+  }
+
+  /* Compact LEVEL / SCORE chips — still visible, just smaller */
+  .lp-game-stats {
+    gap: 6px;
+  }
+  .lp-game-stat {
+    padding: 3px 8px;
+    min-width: 44px;
+  }
+  .lp-game-stat__label { font-size: 8px; }
+  .lp-game-stat__value { font-size: 16px; }
 }
 
