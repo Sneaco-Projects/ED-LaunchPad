@@ -1,9 +1,13 @@
 .lp-app {
+<<<<<<< HEAD
   height: 100vh;
   width: 100vw;
   overflow: hidden;
   display: flex;
   flex-direction: column;
+=======
+  min-height: 100vh;
+>>>>>>> f65bb64d0e1792a0f4f40f439b14e41e94f9c1f2
   background: radial-gradient(1200px 800px at 20% 10%, #1b1f2a, #0f1117);
   color: rgba(255, 255, 255, 0.92);
 }
@@ -12,17 +16,25 @@
   position: sticky;
   top: 0;
   z-index: 10;
+<<<<<<< HEAD
   flex-shrink: 0;
+=======
+>>>>>>> f65bb64d0e1792a0f4f40f439b14e41e94f9c1f2
   display: grid;
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
   gap: 16px;
+<<<<<<< HEAD
   padding: 10px 16px;
+=======
+  padding: 14px 18px;
+>>>>>>> f65bb64d0e1792a0f4f40f439b14e41e94f9c1f2
   background: rgba(15, 17, 23, 0.8);
   backdrop-filter: blur(10px);
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
+<<<<<<< HEAD
 .lp-topbar__left {
   display: flex;
   align-items: center;
@@ -40,6 +52,11 @@
   font-size: 15px;
   letter-spacing: 0.04em;
   white-space: nowrap;
+=======
+.lp-brand {
+  font-weight: 700;
+  letter-spacing: 0.04em;
+>>>>>>> f65bb64d0e1792a0f4f40f439b14e41e94f9c1f2
 }
 
 .lp-topbar__center {
@@ -51,10 +68,15 @@
 
 .lp-topbar__right {
   display: flex;
+<<<<<<< HEAD
   align-items: center;
   justify-content: flex-end;
   gap: 10px;
   position: relative; /* anchor for the hamburger dropdown */
+=======
+  justify-content: flex-end;
+  gap: 10px;
+>>>>>>> f65bb64d0e1792a0f4f40f439b14e41e94f9c1f2
 }
 
 .lp-btn {
@@ -86,6 +108,7 @@
 }
 
 .lp-main {
+<<<<<<< HEAD
   flex: 1;
   min-height: 0;
   overflow: hidden;
@@ -120,10 +143,35 @@
 .lp-section__title h2 {
   margin: 0 0 5px;
   font-size: 12px;
+=======
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 18px 24px;
+}
+
+.lp-section {
+  padding: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.04);
+  margin-bottom: 16px;
+}
+
+.lp-section--custom {
+  background: rgba(255, 255, 255, 0.03);
+  border-style: dashed;
+}
+
+.lp-section__title h2 {
+  margin: 0 0 12px;
+  font-size: 14px;
+>>>>>>> f65bb64d0e1792a0f4f40f439b14e41e94f9c1f2
   font-weight: 600;
   color: rgba(255, 255, 255, 0.78);
 }
 
+<<<<<<< HEAD
 /* ── Wrapper that contains col-headers + pad grid ── */
 .lp-grid-wrapper {
   display: flex;
@@ -151,17 +199,31 @@
   gap: 6px;
   width: 100%;
   height: calc(100vh - 160px);
+=======
+.lp-grid {
+  display: grid;
+  gap: 10px;
+  grid-auto-rows: minmax(56px, 1fr);
+>>>>>>> f65bb64d0e1792a0f4f40f439b14e41e94f9c1f2
 }
 
 .lp-colhdr {
   display: flex;
   align-items: center;
+<<<<<<< HEAD
   gap: 6px;
   padding: 4px 8px;
   border-radius: 8px;
   background: rgba(255, 255, 255, 0.04);
   border: 1px solid rgba(255, 255, 255, 0.06);
   overflow: hidden;
+=======
+  gap: 10px;
+  padding: 6px 10px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+>>>>>>> f65bb64d0e1792a0f4f40f439b14e41e94f9c1f2
 }
 
 .lp-colhdr--queued {
@@ -180,6 +242,7 @@
 }
 
 .lp-colhdr__dot {
+<<<<<<< HEAD
   width: 8px;
   height: 8px;
   border-radius: 999px;
@@ -188,6 +251,15 @@
 
 .lp-colhdr__label {
   font-size: 11px;
+=======
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+}
+
+.lp-colhdr__label {
+  font-size: 12px;
+>>>>>>> f65bb64d0e1792a0f4f40f439b14e41e94f9c1f2
   color: rgba(255, 255, 255, 0.7);
   white-space: nowrap;
   overflow: hidden;
@@ -195,6 +267,7 @@
 }
 
 .lp-pad {
+<<<<<<< HEAD
   /* aspect-ratio:1/1 makes each pad a perfect square regardless of how the
      grid row height is resolved. width:100% fills the column track; height
      then self-sizes to match, keeping cells square even when a title row or
@@ -218,6 +291,19 @@
 }
 
 
+=======
+  width: 100%;
+  min-height: 72px;
+  border-radius: 14px;
+  border: 2px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.92);
+  cursor: pointer;
+  position: relative;
+  transition: transform 0.08s ease, background 0.12s ease;
+}
+
+>>>>>>> f65bb64d0e1792a0f4f40f439b14e41e94f9c1f2
 .lp-pad:disabled {
   opacity: 0.18;
   cursor: default;
@@ -232,6 +318,7 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+<<<<<<< HEAD
   justify-content: flex-end;
   gap: 1px;
   padding: 5px 6px;
@@ -253,6 +340,21 @@
   font-size: 9px;
   opacity: 0.6;
   text-transform: lowercase;
+=======
+  justify-content: center;
+  gap: 2px;
+  padding: 10px 12px;
+}
+
+.lp-pad__name {
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.lp-pad__meta {
+  font-size: 11px;
+  opacity: 0.7;
+>>>>>>> f65bb64d0e1792a0f4f40f439b14e41e94f9c1f2
 }
 
 .lp-pad__badge {
@@ -273,6 +375,7 @@
   animation: lpPulse 0.9s ease-in-out infinite;
 }
 
+<<<<<<< HEAD
 /* ── Freestyle: playing state – high-intensity neon bloom using track color ── */
 .lp-pad--playing {
   background: linear-gradient(
@@ -302,6 +405,15 @@
 .lp-section--game-live .lp-pad--stop {
   opacity: 0.2;
   filter: brightness(0.5);
+=======
+.lp-pad--playing {
+  background: rgba(var(--col-rgb), 0.16);
+  box-shadow: 0 0 0 2px rgba(var(--col-rgb), 0.28), 0 0 26px rgba(var(--col-rgb), 0.26);
+}
+
+.lp-pad--stop {
+  background: rgba(255, 71, 87, 0.12);
+>>>>>>> f65bb64d0e1792a0f4f40f439b14e41e94f9c1f2
 }
 
 @keyframes lpPulse {
@@ -332,6 +444,7 @@
   display: none;
 }
 
+<<<<<<< HEAD
 /* ── Responsive visibility helpers ── */
 /* Mobile-only items hidden by default; desktop-only items always shown */
 .lp-mobile-only { display: none !important; }
@@ -439,10 +552,13 @@
   .lp-pad--ghost    { aspect-ratio: unset; height: 100%; }
 }
 
+=======
+>>>>>>> f65bb64d0e1792a0f4f40f439b14e41e94f9c1f2
 /* =========================================================================
    GAME MODE STYLES
    ========================================================================= */
 
+<<<<<<< HEAD
 /* ── MODE label ── */
 .lp-mode-label {
   font-size: 11px;
@@ -464,10 +580,20 @@
   background: rgba(255, 255, 255, 0.06);
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 10px;
+=======
+/* Mode Toggle */
+.lp-mode-toggle {
+  display: flex;
+  gap: 2px;
+  margin-left: 16px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 8px;
+>>>>>>> f65bb64d0e1792a0f4f40f439b14e41e94f9c1f2
   padding: 3px;
 }
 
 .lp-mode-btn {
+<<<<<<< HEAD
   padding: 9px 22px;
   min-height: 44px;          /* iOS / Android minimum tap target */
   border: 1px solid transparent;
@@ -480,10 +606,22 @@
   transition: all 0.15s ease;
   white-space: nowrap;
   letter-spacing: 0.02em;
+=======
+  padding: 6px 12px;
+  border: none;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 12px;
+  font-weight: 500;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+>>>>>>> f65bb64d0e1792a0f4f40f439b14e41e94f9c1f2
 }
 
 .lp-mode-btn:hover {
   color: rgba(255, 255, 255, 0.85);
+<<<<<<< HEAD
   background: rgba(255, 255, 255, 0.07);
 }
 
@@ -578,12 +716,27 @@
   display: flex;
   align-items: center;
   gap: 10px;
+=======
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.lp-mode-btn--active {
+  background: rgba(255, 255, 255, 0.12);
+  color: rgba(255, 255, 255, 0.95);
+}
+
+/* Game Stats Display */
+.lp-game-stats {
+  display: flex;
+  gap: 16px;
+>>>>>>> f65bb64d0e1792a0f4f40f439b14e41e94f9c1f2
 }
 
 .lp-game-stat {
   display: flex;
   flex-direction: column;
   align-items: center;
+<<<<<<< HEAD
   padding: 5px 16px;
   background: rgba(255, 255, 255, 0.07);
   border: 1px solid rgba(255, 255, 255, 0.11);
@@ -605,6 +758,25 @@
   font-weight: 700;
   color: rgba(255, 255, 255, 0.97);
   line-height: 1;
+=======
+  padding: 4px 12px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 8px;
+  min-width: 60px;
+}
+
+.lp-game-stat__label {
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.5);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.lp-game-stat__value {
+  font-size: 18px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.95);
+>>>>>>> f65bb64d0e1792a0f4f40f439b14e41e94f9c1f2
 }
 
 /* Game Status Messages */
@@ -656,6 +828,7 @@
   margin-left: 12px;
 }
 
+<<<<<<< HEAD
 /* Game Pad States — NEON BLOOM */
 
 /* Blue: computer demo sequence */
@@ -707,10 +880,50 @@
   opacity: 1 !important;
   z-index: 10;
   animation: lpIncorrectShake 0.4s ease;
+=======
+/* Game Pad States */
+.lp-pad--demo {
+  background: linear-gradient(135deg, rgba(0, 200, 255, 0.6), rgba(120, 80, 255, 0.5)) !important;
+  box-shadow: 
+    0 0 0 4px rgba(0, 200, 255, 0.8),
+    0 0 40px rgba(0, 200, 255, 0.7),
+    0 0 80px rgba(120, 80, 255, 0.5),
+    inset 0 0 30px rgba(255, 255, 255, 0.3) !important;
+  transform: scale(1.08);
+  animation: lpDemoPulse 0.5s ease-out;
+  z-index: 10;
+  border-color: rgba(255, 255, 255, 0.9) !important;
+}
+
+.lp-pad--correct {
+  background: linear-gradient(135deg, rgba(46, 213, 115, 0.7), rgba(0, 255, 150, 0.5)) !important;
+  box-shadow: 
+    0 0 0 4px rgba(46, 213, 115, 0.9),
+    0 0 40px rgba(46, 213, 115, 0.8),
+    0 0 70px rgba(0, 255, 150, 0.5),
+    inset 0 0 25px rgba(255, 255, 255, 0.3) !important;
+  animation: lpCorrectFlash 0.4s ease;
+  z-index: 10;
+}
+
+.lp-pad--incorrect {
+  background: linear-gradient(135deg, rgba(255, 71, 87, 0.7), rgba(255, 100, 100, 0.5)) !important;
+  box-shadow: 
+    0 0 0 4px rgba(255, 71, 87, 0.9),
+    0 0 40px rgba(255, 71, 87, 0.8),
+    0 0 70px rgba(255, 100, 100, 0.5),
+    inset 0 0 25px rgba(255, 255, 255, 0.2) !important;
+  animation: lpIncorrectShake 0.4s ease;
+  z-index: 10;
+>>>>>>> f65bb64d0e1792a0f4f40f439b14e41e94f9c1f2
 }
 
 .lp-pad--disabled-input {
   pointer-events: none;
+<<<<<<< HEAD
+=======
+  opacity: 0.7;
+>>>>>>> f65bb64d0e1792a0f4f40f439b14e41e94f9c1f2
 }
 
 /* Game Animations */
@@ -827,6 +1040,7 @@
     transform: translateX(3px);
   }
 }
+<<<<<<< HEAD
 
 /* =========================================================================
    TUTORIAL MODAL
@@ -1659,3 +1873,5 @@
   .lp-game-stat__value { font-size: 16px; }
 }
 
+=======
+>>>>>>> f65bb64d0e1792a0f4f40f439b14e41e94f9c1f2

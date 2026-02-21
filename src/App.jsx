@@ -3,12 +3,19 @@ import './App.css';
 
 import { AudioEngine } from './engine/AudioEngine';
 import { getDemoProject } from './engine/demoProject';
+<<<<<<< HEAD
 import { buildUnifiedGridPads } from './engine/buildPads';
 import { PadState, GamePhase } from './ui/padStates';
 import { TopBar } from './ui/TopBar';
 import { LaunchpadGrid } from './ui/LaunchpadGrid';
 import { TutorialModal } from './ui/TutorialModal';
 import { AccountModal } from './ui/AccountModal';
+=======
+import { buildCustomGridPads, buildMainGridPads } from './engine/buildPads';
+import { PadState, GamePhase } from './ui/padStates';
+import { TopBar } from './ui/TopBar';
+import { LaunchpadGrid } from './ui/LaunchpadGrid';
+>>>>>>> f65bb64d0e1792a0f4f40f439b14e41e94f9c1f2
 
 // Fixed tempo - 130 BPM
 const FIXED_BPM = 130;
@@ -46,6 +53,7 @@ const App = () => {
   const [playerProgress, setPlayerProgress] = useState(0); // Index in sequence
   const [gameHighlightedPads, setGameHighlightedPads] = useState(new Set());
   const [gameFeedbackPads, setGameFeedbackPads] = useState(new Map());
+<<<<<<< HEAD
   const [isRecording, setIsRecording] = useState(false);
   const [showTutorial, setShowTutorial] = useState(false);
   // Tutorial shown automatically only the FIRST time the user enters Game mode.
@@ -57,6 +65,8 @@ const App = () => {
   // =========================================================================
   const [showAccount, setShowAccount] = useState(false);
   const [currentUser, setCurrentUser] = useState(null); // null = logged out
+=======
+>>>>>>> f65bb64d0e1792a0f4f40f439b14e41e94f9c1f2
   
   // Track playable clips for game selection
   const playableClipIds = useRef([]);
@@ -112,6 +122,7 @@ const App = () => {
   // =========================================================================
   // MEMOIZED UI DATA
   // =========================================================================
+<<<<<<< HEAD
   // Build the unified pad map AND compute the trimmed row count in one pass.
   // After URL-dedup, custom row 1 (unified row 8) is entirely empty.
   // We scan the Map for the highest content row, remap stop pads to sit
@@ -144,6 +155,17 @@ const App = () => {
 
     return { unifiedPads: pads, gridRows: totalRows };
   }, [project, clipStatesById]);
+=======
+  const mainPads = useMemo(
+    () => buildMainGridPads(project, clipStatesById),
+    [project, clipStatesById]
+  );
+
+  const customPads = useMemo(
+    () => buildCustomGridPads(project, clipStatesById),
+    [project, clipStatesById]
+  );
+>>>>>>> f65bb64d0e1792a0f4f40f439b14e41e94f9c1f2
 
   const columnLabels = useMemo(() => {
     const labels = Array(project.grid.columns).fill('');
@@ -161,20 +183,30 @@ const App = () => {
     return colors;
   }, [project]);
 
+<<<<<<< HEAD
   const columnActivity = useMemo(() => {
     const activity = Array(project.grid.columns).fill('idle');
     if (appMode !== 'freestyle') return activity;
+=======
+  const mainColumnActivity = useMemo(() => {
+    const activity = Array(project.grid.columns).fill('idle');
+>>>>>>> f65bb64d0e1792a0f4f40f439b14e41e94f9c1f2
 
     for (const track of project.tracks) {
       const col = track.column;
       let hasPlayingLoop = false;
       let hasQueuedLoop = false;
+<<<<<<< HEAD
+=======
+
+>>>>>>> f65bb64d0e1792a0f4f40f439b14e41e94f9c1f2
       for (const clip of track.clips) {
         if (clip.type !== 'loop') continue;
         const st = clipStatesById.get(clip.id);
         if (st === 'playing') hasPlayingLoop = true;
         if (st === 'queued') hasQueuedLoop = true;
       }
+<<<<<<< HEAD
       activity[col] =
         hasPlayingLoop && hasQueuedLoop ? 'switching'
         : hasPlayingLoop ? 'playing'
@@ -191,6 +223,36 @@ const App = () => {
     }
     return activity;
   }, [project, clipStatesById, appMode]);
+=======
+
+      activity[col] = hasPlayingLoop && hasQueuedLoop ? 'switching' : hasPlayingLoop ? 'playing' : hasQueuedLoop ? 'queued' : 'idle';
+    }
+
+    return activity;
+  }, [project, clipStatesById]);
+
+  const customColumnActivity = useMemo(() => {
+    const cols = project.customGrid.columns;
+    const activity = Array(cols).fill('idle');
+
+    for (let col = 0; col < cols; col++) {
+      let hasPlaying = false;
+      let hasQueued = false;
+
+      for (const clip of project.customClips) {
+        if (clip.column !== col) continue;
+        if (clip.type !== 'loop') continue;
+        const st = clipStatesById.get(clip.id);
+        if (st === 'playing') hasPlaying = true;
+        if (st === 'queued') hasQueued = true;
+      }
+
+      activity[col] = hasPlaying && hasQueued ? 'switching' : hasPlaying ? 'playing' : hasQueued ? 'queued' : 'idle';
+    }
+
+    return activity;
+  }, [project, clipStatesById]);
+>>>>>>> f65bb64d0e1792a0f4f40f439b14e41e94f9c1f2
 
   // =========================================================================
   // AUDIO INITIALIZATION
@@ -416,11 +478,14 @@ const App = () => {
     setGameHighlightedPads(new Set());
   }, []);
 
+<<<<<<< HEAD
   // Restart game immediately from level 1 (used by mobile hamburger Play Again)
   const handleRestartGame = useCallback(() => {
     handleStartGame();
   }, [handleStartGame]);
 
+=======
+>>>>>>> f65bb64d0e1792a0f4f40f439b14e41e94f9c1f2
   // Handle mode change
   const handleModeChange = useCallback((mode) => {
     // Abort any running game sequence
@@ -442,18 +507,25 @@ const App = () => {
       setGameScore(0);
       setGameSequence([]);
       setPlayerProgress(0);
+<<<<<<< HEAD
       // Auto-show tutorial only the very first time the user enters game mode
       if (!hasSeenTutorial) {
         setShowTutorial(true);
         setHasSeenTutorial(true);
       }
+=======
+>>>>>>> f65bb64d0e1792a0f4f40f439b14e41e94f9c1f2
     } else {
       setGamePhase(GamePhase.inactive);
     }
     
     setGameFeedbackPads(new Map());
     setGameHighlightedPads(new Set());
+<<<<<<< HEAD
   }, [hasSeenTutorial]);
+=======
+  }, []);
+>>>>>>> f65bb64d0e1792a0f4f40f439b14e41e94f9c1f2
 
   // Unified pad click handler
   const handlePadClick = useCallback(async (clipId) => {
@@ -464,11 +536,14 @@ const App = () => {
     }
   }, [appMode, handleGamePadClick, handleFreestylePadClick]);
 
+<<<<<<< HEAD
   // Toggle recording (UI state only — audio recording not yet implemented)
   const handleToggleRecord = useCallback(() => {
     setIsRecording(prev => !prev);
   }, []);
 
+=======
+>>>>>>> f65bb64d0e1792a0f4f40f439b14e41e94f9c1f2
   // Ensure empty clip states default to idle.
   useEffect(() => {
     setClipStatesById((prev) => {
@@ -486,6 +561,7 @@ const App = () => {
   }, [project]);
 
   // Determine if input should be disabled
+<<<<<<< HEAD
   const disableInput = appMode === 'game' &&
     (gamePhase === GamePhase.demonstrating ||
      gamePhase === GamePhase.success ||
@@ -496,6 +572,13 @@ const App = () => {
     gamePhase !== GamePhase.inactive &&
     gamePhase !== GamePhase.ready;
 
+=======
+  const disableInput = appMode === 'game' && 
+    (gamePhase === GamePhase.demonstrating || 
+     gamePhase === GamePhase.success || 
+     gamePhase === GamePhase.gameOver);
+
+>>>>>>> f65bb64d0e1792a0f4f40f439b14e41e94f9c1f2
   return (
     <div className="lp-app">
       <TopBar
@@ -508,6 +591,7 @@ const App = () => {
         gameScore={gameScore}
         onStartGame={handleStartGame}
         onResetGame={handleResetGame}
+<<<<<<< HEAD
         onRestartGame={handleRestartGame}
         isRecording={isRecording}
         onToggleRecord={handleToggleRecord}
@@ -538,10 +622,15 @@ const App = () => {
         />
       )}
 
+=======
+      />
+
+>>>>>>> f65bb64d0e1792a0f4f40f439b14e41e94f9c1f2
       <main className="lp-main">
         <LaunchpadGrid
           title={appMode === 'game' ? `Memory Game - Level ${gameLevel}` : project.name}
           columns={project.grid.columns}
+<<<<<<< HEAD
           rows={gridRows}
           pads={unifiedPads}
           onPadClick={handlePadClick}
@@ -552,6 +641,33 @@ const App = () => {
           gameFeedbackPads={gameFeedbackPads}
           disableInput={disableInput}
           gameActive={gameActive}
+=======
+          rows={project.grid.rows}
+          pads={mainPads}
+          onPadClick={handlePadClick}
+          columnLabels={columnLabels}
+          columnColors={columnColors}
+          columnActivity={appMode === 'freestyle' ? mainColumnActivity : Array(project.grid.columns).fill('idle')}
+          variant="main"
+          gameHighlightedPads={gameHighlightedPads}
+          gameFeedbackPads={gameFeedbackPads}
+          disableInput={disableInput}
+        />
+
+        <LaunchpadGrid
+          title={project.customGrid.label ?? 'Custom Clips'}
+          columns={project.customGrid.columns}
+          rows={project.customGrid.rows}
+          pads={customPads}
+          onPadClick={handlePadClick}
+          columnLabels={Array(project.customGrid.columns).fill('')}
+          columnColors={Array(project.customGrid.columns).fill('#2f3542')}
+          columnActivity={appMode === 'freestyle' ? customColumnActivity : Array(project.customGrid.columns).fill('idle')}
+          variant="custom"
+          gameHighlightedPads={gameHighlightedPads}
+          gameFeedbackPads={gameFeedbackPads}
+          disableInput={disableInput}
+>>>>>>> f65bb64d0e1792a0f4f40f439b14e41e94f9c1f2
         />
       </main>
     </div>

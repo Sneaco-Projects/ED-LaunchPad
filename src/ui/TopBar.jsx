@@ -1,9 +1,17 @@
+<<<<<<< HEAD
 import React, { useState, useEffect, useRef } from 'react';
+=======
+import React from 'react';
+>>>>>>> f65bb64d0e1792a0f4f40f439b14e41e94f9c1f2
 import { GamePhase } from './padStates';
 
 export function TopBar({
   isPlaying,
   onToggleTransport,
+<<<<<<< HEAD
+=======
+  // Game mode props
+>>>>>>> f65bb64d0e1792a0f4f40f439b14e41e94f9c1f2
   appMode = 'freestyle',
   onModeChange,
   gamePhase = GamePhase.inactive,
@@ -11,6 +19,7 @@ export function TopBar({
   gameScore = 0,
   onStartGame,
   onResetGame,
+<<<<<<< HEAD
   isRecording = false,
   onToggleRecord,
   onShowTutorial,
@@ -62,22 +71,43 @@ export function TopBar({
         <img src="/icons/icon-32.png" alt="Rebeat" className="lp-logo" />
         <span className="lp-brand">Rebeat</span>
 
+=======
+}) {
+  const isGameMode = appMode === 'game';
+
+  return (
+    <header className="lp-topbar">
+      <div className="lp-topbar__left">
+        <div className="lp-brand">Launchpad</div>
+        
+        {/* Mode Toggle */}
+>>>>>>> f65bb64d0e1792a0f4f40f439b14e41e94f9c1f2
         <div className="lp-mode-toggle">
           <button
             type="button"
             className={`lp-mode-btn ${!isGameMode ? 'lp-mode-btn--active' : ''}`}
+<<<<<<< HEAD
             onClick={() => { onModeChange?.('freestyle'); setMenuOpen(false); }}
+=======
+            onClick={() => onModeChange?.('freestyle')}
+>>>>>>> f65bb64d0e1792a0f4f40f439b14e41e94f9c1f2
           >
             Freestyle
           </button>
           <button
             type="button"
+<<<<<<< HEAD
             className={`lp-mode-btn lp-mode-btn--game ${isGameMode ? 'lp-mode-btn--active lp-mode-btn--game-active' : ''}`}
             onClick={() => { onModeChange?.('game'); setMenuOpen(false); }}
+=======
+            className={`lp-mode-btn ${isGameMode ? 'lp-mode-btn--active' : ''}`}
+            onClick={() => onModeChange?.('game')}
+>>>>>>> f65bb64d0e1792a0f4f40f439b14e41e94f9c1f2
           >
             Game
           </button>
         </div>
+<<<<<<< HEAD
 
         <span className="lp-mode-label">
           MODE: <strong>{appMode.toUpperCase()}</strong>
@@ -123,6 +153,49 @@ export function TopBar({
                 <div className="lp-game-status lp-game-status--gameover lp-desktop-only">Game Over!</div>
                 {/* Play Again — desktop only; mobile uses hamburger */}
                 <button className="lp-btn lp-btn--game-reset lp-desktop-only" type="button" onClick={onResetGame}>
+=======
+      </div>
+
+      <div className="lp-topbar__center">
+        {!isGameMode ? (
+          // Freestyle Mode: Play/Stop button only
+          <button className="lp-btn lp-btn--transport" type="button" onClick={onToggleTransport}>
+            {isPlaying ? 'Stop' : 'Play'}
+          </button>
+        ) : (
+          // Game Mode Controls
+          <>
+            {gamePhase === GamePhase.ready && (
+              <button className="lp-btn lp-btn--game-start" type="button" onClick={onStartGame}>
+                Start Game
+              </button>
+            )}
+            
+            {gamePhase === GamePhase.demonstrating && (
+              <div className="lp-game-status lp-game-status--demo">
+                Watch the sequence...
+              </div>
+            )}
+            
+            {gamePhase === GamePhase.waitingForInput && (
+              <div className="lp-game-status lp-game-status--input">
+                Your turn!
+              </div>
+            )}
+            
+            {gamePhase === GamePhase.success && (
+              <div className="lp-game-status lp-game-status--success">
+                Level Complete!
+              </div>
+            )}
+            
+            {gamePhase === GamePhase.gameOver && (
+              <>
+                <div className="lp-game-status lp-game-status--gameover">
+                  Game Over!
+                </div>
+                <button className="lp-btn lp-btn--game-reset" type="button" onClick={onResetGame}>
+>>>>>>> f65bb64d0e1792a0f4f40f439b14e41e94f9c1f2
                   Play Again
                 </button>
               </>
@@ -131,6 +204,7 @@ export function TopBar({
         )}
       </div>
 
+<<<<<<< HEAD
       {/* ── RIGHT: HUD + Account (desktop) / Hamburger (mobile) ── */}
       <div className="lp-topbar__right" ref={menuRef}>
 
@@ -270,10 +344,25 @@ export function TopBar({
                 {currentUser ? currentUser.username : 'Login / Register'}
               </span>
             </button>
+=======
+      <div className="lp-topbar__right">
+        {isGameMode && (
+          // Game Mode: Level and Score display
+          <div className="lp-game-stats">
+            <div className="lp-game-stat">
+              <span className="lp-game-stat__label">Level</span>
+              <span className="lp-game-stat__value">{gameLevel}</span>
+            </div>
+            <div className="lp-game-stat">
+              <span className="lp-game-stat__label">Score</span>
+              <span className="lp-game-stat__value">{gameScore}</span>
+            </div>
+>>>>>>> f65bb64d0e1792a0f4f40f439b14e41e94f9c1f2
           </div>
         )}
       </div>
     </header>
+<<<<<<< HEAD
 
     {/* ── Game status banner — mobile only, below the navbar ── */}
     {statusInfo && (
@@ -283,5 +372,7 @@ export function TopBar({
       </div>
     )}
     </>
+=======
+>>>>>>> f65bb64d0e1792a0f4f40f439b14e41e94f9c1f2
   );
 }

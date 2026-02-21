@@ -25,6 +25,7 @@ a:hover {
 body {
   margin: 0;
   min-width: 320px;
+<<<<<<< HEAD
   height: 100vh;
   overflow: hidden;
 }
@@ -37,6 +38,9 @@ html {
 #root {
   height: 100%;
   overflow: hidden;
+=======
+  min-height: 100vh;
+>>>>>>> f65bb64d0e1792a0f4f40f439b14e41e94f9c1f2
 }
 
 html,
