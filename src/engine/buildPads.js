@@ -1,6 +1,5 @@
 import { PadState } from '../ui/padStates';
 
-<<<<<<< HEAD
 // ─────────────────────────────────────────────────────────────────────────────
 // UNIFIED 8×10 GRID
 // Row layout:
@@ -69,42 +68,6 @@ export function buildUnifiedGridPads(project, clipStatesById) {
     });
 
     if (url) seenAudioUrls.add(url);      // prevent further custom dups
-  }
-
-  return pads;
-}
-
-=======
->>>>>>> f65bb64d0e1792a0f4f40f439b14e41e94f9c1f2
-export function buildMainGridPads(project, clipStatesById) {
-  const pads = new Map();
-
-  for (const track of project.tracks) {
-    for (const clip of track.clips) {
-      const key = `${track.column}:${clip.row}`;
-      pads.set(key, {
-        id: clip.id,
-        name: clip.name ?? clip.id,
-        type: clip.type,
-        state: clipStatesById.get(clip.id) ?? PadState.idle,
-      });
-    }
-  }
-
-  return pads;
-}
-
-export function buildCustomGridPads(project, clipStatesById) {
-  const pads = new Map();
-
-  for (const clip of project.customClips) {
-    const key = `${clip.column}:${clip.row}`;
-    pads.set(key, {
-      id: clip.id,
-      name: clip.name ?? clip.id,
-      type: clip.type,
-      state: clipStatesById.get(clip.id) ?? PadState.idle,
-    });
   }
 
   return pads;
