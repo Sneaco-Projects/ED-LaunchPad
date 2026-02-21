@@ -7,13 +7,8 @@
     "quantization": "1m"
   },
   "grid": {
-<<<<<<< HEAD
     "columns": 8,
     "rows": 10
-=======
-    "columns": 7,
-    "rows": 8
->>>>>>> f65bb64d0e1792a0f4f40f439b14e41e94f9c1f2
   },
   "tracks": [
     {
@@ -127,7 +122,6 @@
         { "id": "lead_7", "name": "Futuristic", "row": 6, "type": "loop", "source": { "kind": "url", "url": "/audio/Lead/BF_130_D_Set07_-_8_-_Leads_original_sample_-_DS_BPG_150_synth_lead_futuristic_Dmin.wav", "bars": 1 } },
         { "id": "lead_stop", "name": "Stop", "row": 7, "type": "stop" }
       ]
-<<<<<<< HEAD
     },
     {
       "id": "vocalchops",
@@ -148,12 +142,6 @@
   ],
   "customGrid": {
     "columns": 8,
-=======
-    }
-  ],
-  "customGrid": {
-    "columns": 7,
->>>>>>> f65bb64d0e1792a0f4f40f439b14e41e94f9c1f2
     "rows": 2,
     "label": "Set 08 Extras"
   },
@@ -171,11 +159,7 @@
     { "id": "custom_31", "name": "Hell", "column": 3, "row": 1, "type": "loop", "source": { "kind": "url", "url": "/audio/Perc/BF_130_D_Set08_-_4_-_Drums_original_sample_-_KMRBI_BP_130_percussion_loop_hell.wav", "bars": 1 } },
     { "id": "custom_41", "name": "Pouch", "column": 4, "row": 1, "type": "loop", "source": { "kind": "url", "url": "/audio/Shaker/BF_130_D_Set08_-_5_-_Drums_original_sample_-_AU_VBP_130_shaker_pouch.wav", "bars": 1 } },
     { "id": "custom_51", "name": "Wet Vocal", "column": 5, "row": 1, "type": "loop", "source": { "kind": "url", "url": "/audio/Vocal-Main/BF_130_D_Set08_-_6_-_Vocals_original_sample_-_DS_BPT_130_vocal_hook_male_sensualizando_chorus_wet_Dmin.wav", "bars": 1 } },
-<<<<<<< HEAD
     { "id": "custom_61", "name": "Ghost", "column": 6, "row": 1, "type": "loop", "source": { "kind": "url", "url": "/audio/Lead/BF_130_D_Set08_-_8_-_Brass_%26_Winds_original_sample_-_DS_BP2_120_brass_synth_ghost_Dmin.wav", "bars": 1 } },
     { "id": "custom_70", "name": "Twisted", "column": 7, "row": 0, "type": "loop", "source": { "kind": "url", "url": "/audio/Vocal2/BF_130_D_Set08_-_7_-_Vocals_original_sample_-_DS_BPG_130_vocal_chop_twisted_C%23.wav", "bars": 1 } }
-=======
-    { "id": "custom_61", "name": "Ghost", "column": 6, "row": 1, "type": "loop", "source": { "kind": "url", "url": "/audio/Lead/BF_130_D_Set08_-_8_-_Brass_%26_Winds_original_sample_-_DS_BP2_120_brass_synth_ghost_Dmin.wav", "bars": 1 } }
->>>>>>> f65bb64d0e1792a0f4f40f439b14e41e94f9c1f2
   ]
 }
