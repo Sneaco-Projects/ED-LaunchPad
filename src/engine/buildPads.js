@@ -1,5 +1,6 @@
 import { PadState } from '../ui/padStates';
 
+<<<<<<< HEAD
 // ─────────────────────────────────────────────────────────────────────────────
 // UNIFIED 8×10 GRID
 // Row layout:
@@ -73,6 +74,8 @@ export function buildUnifiedGridPads(project, clipStatesById) {
   return pads;
 }
 
+=======
+>>>>>>> f65bb64d0e1792a0f4f40f439b14e41e94f9c1f2
 export function buildMainGridPads(project, clipStatesById) {
   const pads = new Map();
 
