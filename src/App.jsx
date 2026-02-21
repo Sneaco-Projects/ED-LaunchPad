@@ -8,6 +8,7 @@ import { PadState, GamePhase } from './ui/padStates';
 import { TopBar } from './ui/TopBar';
 import { LaunchpadGrid } from './ui/LaunchpadGrid';
 import { TutorialModal } from './ui/TutorialModal';
+import { AccountModal } from './ui/AccountModal';
 
 // Fixed tempo - 130 BPM
 const FIXED_BPM = 130;
@@ -50,6 +51,12 @@ const App = () => {
   // Tutorial shown automatically only the FIRST time the user enters Game mode.
   // After that it only appears when the user manually clicks the "?" button.
   const [hasSeenTutorial, setHasSeenTutorial] = useState(false);
+
+  // =========================================================================
+  // ACCOUNT / AUTH STATE
+  // =========================================================================
+  const [showAccount, setShowAccount] = useState(false);
+  const [currentUser, setCurrentUser] = useState(null); // null = logged out
   
   // Track playable clips for game selection
   const playableClipIds = useRef([]);
@@ -409,6 +416,11 @@ const App = () => {
     setGameHighlightedPads(new Set());
   }, []);
 
+  // Restart game immediately from level 1 (used by mobile hamburger Play Again)
+  const handleRestartGame = useCallback(() => {
+    handleStartGame();
+  }, [handleStartGame]);
+
   // Handle mode change
   const handleModeChange = useCallback((mode) => {
     // Abort any running game sequence
@@ -496,9 +508,12 @@ const App = () => {
         gameScore={gameScore}
         onStartGame={handleStartGame}
         onResetGame={handleResetGame}
+        onRestartGame={handleRestartGame}
         isRecording={isRecording}
         onToggleRecord={handleToggleRecord}
         onShowTutorial={() => setShowTutorial(true)}
+        onShowAccount={() => setShowAccount(true)}
+        currentUser={currentUser}
       />
 
       {showTutorial && (
@@ -506,6 +521,21 @@ const App = () => {
           setShowTutorial(false);
           // If tutorial dismissed for the first time in game mode, trigger start
         }} />
+      )}
+
+      {showAccount && (
+        <AccountModal
+          onClose={() => setShowAccount(false)}
+          currentUser={currentUser}
+          onLogin={(user) => {
+            setCurrentUser(user);
+            setShowAccount(false);
+          }}
+          onLogout={() => {
+            setCurrentUser(null);
+            setShowAccount(false);
+          }}
+        />
       )}
 
       <main className="lp-main">
