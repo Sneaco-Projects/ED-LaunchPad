@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { FaUser, FaPlay, FaStop, FaGamepad, FaRedo, FaQuestionCircle } from 'react-icons/fa';
 import { GamePhase } from './padStates';
 
 export function TopBar({
@@ -162,7 +163,7 @@ export function TopBar({
         >
           {avatarLabel
             ? <span className="lp-account-avatar">{avatarLabel}</span>
-            : '👤'
+            : <FaUser />
           }
         </button>
 
@@ -191,7 +192,7 @@ export function TopBar({
                   onClick={act(onToggleTransport)}
                   role="menuitem"
                 >
-                  <span className="lp-hi-icon">{isPlaying ? '⏹' : '▶'}</span>
+                  <span className="lp-hi-icon">{isPlaying ? <FaStop /> : <FaPlay />}</span>
                   <span className="lp-hi-label">{isPlaying ? 'Stop' : 'Play'}</span>
                 </button>
 
@@ -222,7 +223,7 @@ export function TopBar({
                     onClick={act(onStartGame)}
                     role="menuitem"
                   >
-                    <span className="lp-hi-icon">🎮</span>
+                    <span className="lp-hi-icon"><FaGamepad /></span>
                     <span className="lp-hi-label">Start Game</span>
                   </button>
                 )}
@@ -235,7 +236,7 @@ export function TopBar({
                     onClick={act(onRestartGame)}
                     role="menuitem"
                   >
-                    <span className="lp-hi-icon">🔄</span>
+                    <span className="lp-hi-icon"><FaRedo /></span>
                     <span className="lp-hi-label">Play Again</span>
                   </button>
                 )}
@@ -246,7 +247,7 @@ export function TopBar({
                   onClick={act(onShowTutorial)}
                   role="menuitem"
                 >
-                  <span className="lp-hi-icon">❓</span>
+                  <span className="lp-hi-icon"><FaQuestionCircle /></span>
                   <span className="lp-hi-label">Tutorial</span>
                 </button>
               </>
@@ -263,7 +264,7 @@ export function TopBar({
               <span className="lp-hi-icon">
                 {avatarLabel
                   ? <span className="lp-hi-avatar">{avatarLabel}</span>
-                  : '👤'
+                  : <FaUser />
                 }
               </span>
               <span className="lp-hi-label">

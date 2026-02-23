@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { FaEye, FaEyeSlash, FaTimes } from 'react-icons/fa';
+import { supabase } from '../services/supabaseClient';
 
 // ── AccountModal ────────────────────────────────────────────────────────────
 export function AccountModal({ onClose, onLogin, onLogout, currentUser = null }) {
@@ -83,7 +85,7 @@ function ProfileView({ user, onLogout, onClose }) {
       </button>
 
       <button type="button" className="am-close-btn" onClick={onClose} aria-label="Close">
-        ✕
+        <FaTimes />
       </button>
     </>
   );
@@ -140,22 +142,31 @@ function LoginView({ onClose, onLogin, onSwitch, prefillEmail = '' }) {
   const [password, setPassword] = useState('');
   const [showPw, setShowPw]     = useState(false);
   const [error, setError]       = useState('');
+  const [loading, setLoading]   = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
 
     if (!email.trim()) { setError('Email is required.'); return; }
     if (!password)     { setError('Password is required.'); return; }
 
-    // Mock auth — accept any non-empty credentials
-    const user = {
+    setLoading(true);
+    const { data, error: authError } = await supabase.auth.signInWithPassword({
       email: email.trim(),
-      username: email.trim().split('@')[0],
-      highScore: 0,
+      password,
+    });
+    setLoading(false);
+
+    if (authError) { setError(authError.message); return; }
+
+    const sbUser = data.user;
+    onLogin({
+      email:        sbUser.email,
+      username:     sbUser.user_metadata?.username ?? sbUser.email.split('@')[0],
+      highScore:    0,
       audioRecords: [],
-    };
-    onLogin(user);
+    });
     onClose();
   };
 
@@ -200,14 +211,16 @@ function LoginView({ onClose, onLogin, onSwitch, prefillEmail = '' }) {
               onClick={() => setShowPw((p) => !p)}
               aria-label={showPw ? 'Hide password' : 'Show password'}
             >
-              {showPw ? '🙈' : '👁️'}
+              {showPw ? <FaEyeSlash /> : <FaEye />}
             </button>
           </div>
         </div>
 
         {error && <p className="am-error">{error}</p>}
 
-        <button type="submit" className="am-cta">Login</button>
+        <button type="submit" className="am-cta" disabled={loading}>
+          {loading ? 'Signing in…' : 'Login'}
+        </button>
       </form>
 
       {/* Footer toggle */}
@@ -226,16 +239,25 @@ function RegisterView({ onRegisterSuccess, onSwitch }) {
   const [confirm, setConfirm]    = useState('');
   const [showPw, setShowPw]      = useState(false);
   const [error, setError]        = useState('');
+  const [loading, setLoading]    = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
 
-    if (!email.trim())           { setError('Email is required.'); return; }
-    if (password.length < 6)     { setError('Password must be at least 6 characters.'); return; }
-    if (password !== confirm)    { setError('Passwords do not match.'); return; }
+    if (!email.trim())        { setError('Email is required.'); return; }
+    if (password.length < 6)  { setError('Password must be at least 6 characters.'); return; }
+    if (password !== confirm)  { setError('Passwords do not match.'); return; }
 
-    // Mock registration — hand off to parent to show success view
+    setLoading(true);
+    const { error: authError } = await supabase.auth.signUp({
+      email: email.trim(),
+      password,
+    });
+    setLoading(false);
+
+    if (authError) { setError(authError.message); return; }
+
     onRegisterSuccess(email.trim());
   };
 
@@ -280,7 +302,7 @@ function RegisterView({ onRegisterSuccess, onSwitch }) {
               onClick={() => setShowPw((p) => !p)}
               aria-label={showPw ? 'Hide password' : 'Show password'}
             >
-              {showPw ? '🙈' : '👁️'}
+              {showPw ? <FaEyeSlash /> : <FaEye />}
             </button>
           </div>
         </div>
@@ -300,7 +322,9 @@ function RegisterView({ onRegisterSuccess, onSwitch }) {
 
         {error && <p className="am-error">{error}</p>}
 
-        <button type="submit" className="am-cta">Create Account</button>
+        <button type="submit" className="am-cta" disabled={loading}>
+          {loading ? 'Creating account…' : 'Create Account'}
+        </button>
       </form>
 
       {/* Footer toggle */}

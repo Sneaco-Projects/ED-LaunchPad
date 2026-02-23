@@ -26,29 +26,6 @@ body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
-  height: 100vh;
-  overflow: hidden;
-}
-
-html {
-  height: 100%;
-  overflow: hidden;
-}
-
-#root {
-  height: 100%;
-  overflow: hidden;
-}
-
-html {
-  height: 100%;
-  overflow: hidden;
-}
-
-#root {
-  height: 100%;
-  overflow: hidden;
-  min-height: 100vh;
 }
 
 html,
