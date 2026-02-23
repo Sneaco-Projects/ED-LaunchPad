@@ -1163,6 +1163,7 @@
   top: 0;
   height: 100%;
   width: 42px;
+  padding: 0;
   background: transparent;
   border: none;
   cursor: pointer;
